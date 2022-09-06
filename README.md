@@ -15,12 +15,12 @@ pip install -r requirements.txt
 
 ### Run training with PyTorch
 ```python
-python train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
+python train.py --batch_size = 64 --lr = 3e-4 --model_name = "model_name_from_timm_library"
 ```
 
 ### Run training with PyTorch Lightning (Parallel Training)
 ```python
-python pl_train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
+python pl_train.py --batch_size = 64 --lr = 3e-4 --model_name = "model_name_from_timm_library"
 ```
 
 ### Results
