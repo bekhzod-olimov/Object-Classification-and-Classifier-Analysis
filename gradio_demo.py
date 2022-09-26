@@ -121,18 +121,21 @@ def run(args):
         # Return outputs
         return Image.fromarray(visualization), cls_names[int(torch.max(model(im.unsqueeze(0)).data, 1)[1])]
     
+    # Initialize outputs list with gradio Image object
     outputs = [gr.outputs.Image(type = "numpy", label = "GradCAM Result"), gr.outputs.Label(type = "numpy", label = "Predicted Count")]
-    gr.Interface(fn = predict, inputs = inputs, outputs = outputs, title = title, description = desc, examples = examples, allow_flagging=False).launch(share = True)
+    
+    # Initialize gradio interface
+    gr.Interface(fn = predict, inputs = inputs, outputs = outputs, title = title, description = desc, examples = examples, allow_flagging = False).launch(share = True)
 
 if __name__ == "__main__":
     
     # Initialize argument parser
-    parser = argparse.ArgumentParser(description = 'Object Classification Demo')
+    parser = argparse.ArgumentParser(description = "Object Classification Demo")
     
     # Add arguments
     parser.add_argument("-r", "--root", type = str, default = "/home/ubuntu/workspace/bekhzod/Object-Classification-and-Classifier-Analysis/", help = "Root for sample images")
-    parser.add_argument("-mn", "--model_name", type = str, default = 'rexnet_150', help = "Model name for backbone")
-    parser.add_argument("-cp", "--checkpoint_path", type = str, default = 'saved_models/best_model_11_98.6.pth', help = "Path to the checkpoint")
+    parser.add_argument("-mn", "--model_name", type = str, default = "rexnet_150", help = "Model name for backbone")
+    parser.add_argument("-cp", "--checkpoint_path", type = str, default = "saved_models/best_model_11_98.6.pth", help = "Path to the checkpoint")
     
     # Parse the arguments
     args = parser.parse_args() 
