@@ -1,4 +1,3 @@
-# Import libraries
 import torch, pickle, timm, argparse
 import streamlit as st
 from transforms import get_transforms  
@@ -8,26 +7,11 @@ st.set_page_config(layout='wide')
 
 def run(args):
     
-    # This is demo
-    
-    """
-    
-    This function gets parsed arguments and runs the script.
-    
-    Argument:
-    
-        args - parsed arguments, parser object.
-    
-    """
-    
-    # Get class names list
-    with open('cls_names.pkl', 'rb') as f: cls_names = pickle.load(f)
-    
-    # Initialize data transformations 
+    with open('cls_names.pkl', 'rb') as f:
+        cls_names = pickle.load(f)
     tfs = get_transforms(train = False)
-    
-    # Get number of classes in the dataset
     num_classes = len(cls_names)
+    default_path = "airpods.jpg"
     
 #     ds = ImageFolder(root = "/home/ubuntu/workspace/bekhzod/triplet-loss-pytorch/pytorch_lightning/data/simple_classification", transform = tfs)
     
@@ -37,29 +21,14 @@ def run(args):
 #     with open('cls_names.pkl', 'wb') as f: 
 #         pickle.dump(cls_names, f)
     
-    # Load pretrained model 
     m = load_model(args.model_name, num_classes, args.checkpoint_path)
-    
-    # Write title 
     st.title("Object Recognition")
-    
-    # Initialize file (image) loader
     file = st.file_uploader('Please upload your image')
-    
-    # Once the file is uploaded
-    if file:
-        
-        # Get an image and predicted class 
-        im, out = predict(m, file, tfs, cls_names)
 
-        # Write descriptions
-        st.write(f"Input Image: ")
-        
-        # Visualize the image
-        st.image(im)
-        
-        # Write the predicted class name
-        st.write(f"Predicted as {out}")
+    im, out = predict(m=m, path=file, tfs=tfs, cls_names=cls_names) if file else predict(m=m, path=default_path, tfs=tfs, cls_names=cls_names)
+    st.write(f"Input Image: ")
+    st.image(im)
+    st.write(f"Predicted as {out}")
         
 @st.cache_data
 def load_model(model_name, num_classes, checkpoint_path): 
