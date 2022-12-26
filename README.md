@@ -13,6 +13,11 @@ pip install -r requirements.txt
 
 ![Capture](https://user-images.githubusercontent.com/50166164/209258494-82c2972a-babd-429f-904d-272e2255c5f7.PNG)
 
+### Run training 
+```python
+python train.py --batch_size=64 --lr=3e-4 --model_name="efficientnet_b3a"
+```
+
 ### Results
 
 ![Capture1](https://user-images.githubusercontent.com/50166164/209258512-b69508a2-0abc-4915-aeef-1fbb1133df63.PNG)
