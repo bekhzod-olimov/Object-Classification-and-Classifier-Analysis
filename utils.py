@@ -30,7 +30,7 @@ def validation(model, val_dl, device):
     
     return accuracy
     
-def train(model, tr_dl, val_dl, num_classes, lr, criterion, optimizer, device, epochs, best_accuracy):
+def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epochs, best_accuracy):
 
     # Define your execution device
     print(f"The model will be running on {device} device")
