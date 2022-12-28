@@ -1,4 +1,4 @@
-import torch, os, argparse, yaml, timm
+import torch, argparse, yaml, timm
 from transforms import get_transforms
 from dataset import get_dl
 from utils import train
