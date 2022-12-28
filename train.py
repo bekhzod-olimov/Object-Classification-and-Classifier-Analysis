@@ -28,7 +28,7 @@ def run(args):
     
     # Train model    
     best_accuracy = 0.
-    train(model, tr_dl, val_dl, num_classes, lr, criterion, optimizer, device, epochs, best_accuracy)   
+    train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epochs, best_accuracy)   
     
 if __name__ == "__main__":
     
