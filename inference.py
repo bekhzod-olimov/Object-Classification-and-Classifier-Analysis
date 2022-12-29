@@ -2,6 +2,18 @@ import torch, timm
 
 def inference(model_name, num_classes, checkpoint_path, device, dl):
     
+    '''
+    Gets a model name, number of classes for the dataset, path to the trained model, device type, and dataloader;
+    performs inference and returns model, predictions, target labels, and images.
+    
+    Arguments:
+    model_name - model name for training;
+    num_classes - number of classes for the dataset;
+    checkpoint_path - path to the trained model;
+    device - device type;
+    dl - dataloader.
+    '''
+    
     predictions, gts, images = [], [], []
     model = timm.create_model(model_name, pretrained=True, num_classes=num_classes)
     model.to(device)
