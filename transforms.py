@@ -2,6 +2,12 @@ from torchvision import transforms as tfs
 
 def get_transforms(train=False):
     
+    '''
+    Gets argment to distinguish train or validation transformations and return transforms.
+    
+    Arguments:
+    train - train transformation if True, else validation transformations.
+    '''
     t_tr = tfs.Compose([tfs.Resize((224,224)),
                        tfs.RandomCrop((120, 120)),
                        tfs.RandomHorizontalFlip(p=0.3),
