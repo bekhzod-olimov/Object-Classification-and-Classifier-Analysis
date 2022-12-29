@@ -4,6 +4,15 @@ import torch
 
 def get_dl(root, bs, t):
     
+    '''
+    Get a path to the data and returns class names, number of classes, train dataloader, and validation dataloader.
+    
+    Arguments:
+    root - path to the images;
+    bs - batch size of the dataloaders;
+    t - transformations;
+    '''
+    
     ds = ImageFolder(root=root, transform=t)
     ds_length = len(ds)
     tr_ds, val_ds = torch.utils.data.random_split(ds, [int(ds_length * 0.8), ds_length-int(ds_length * 0.8)])
