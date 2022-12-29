@@ -5,7 +5,7 @@ import torch
 def get_dl(root, bs, t):
     
     '''
-    Get a path to the data and returns class names, number of classes, train dataloader, and validation dataloader.
+    Gets a path to the data and returns class names, number of classes, train dataloader, and validation dataloader.
     
     Arguments:
     root - path to the images;
