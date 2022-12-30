@@ -25,6 +25,7 @@ def validation(model, val_dl, device):
     device - device type.
     '''
     
+    # Change to evaluation mode
     model.eval()
     accuracy, total = 0, 0
 
