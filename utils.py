@@ -16,7 +16,7 @@ def saveModel(model):
 def validation(model, val_dl, device):
     
     '''
-    Gets a model, validation dataloader, and device type; and performs validation process.
+    Gets a model, validation dataloader, and device type; and performs validation process and return accuracy over the whole dataloder.
     
     Arguments:
     model - a trained model;
