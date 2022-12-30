@@ -57,6 +57,9 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
     model - a trained model;
     tr_dl - train dataloader;
     val_dl - validation dataloader;
+    num_classes - number of classes;
+    
+    
     device - device type.
     '''
 
