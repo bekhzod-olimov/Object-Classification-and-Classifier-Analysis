@@ -60,8 +60,8 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
     num_classes - number of classes;
     criterion - loss function;
     optimizer - optimizer type;
-    
-    device - device type.
+    device - device type;
+    epochs - number of epoch to train the model;
     '''
 
     # Define your execution device
