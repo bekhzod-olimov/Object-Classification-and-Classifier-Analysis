@@ -9,8 +9,9 @@ def saveModel(model):
     Arguments:
     model - a trained model.
     '''
-    
+    # Set the path
     path = "./best_model.pth"
+    # Save the model
     torch.save(model.state_dict(), path)
 
 def validation(model, val_dl, device):
