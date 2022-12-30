@@ -62,6 +62,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
     optimizer - optimizer type;
     device - device type;
     epochs - number of epoch to train the model;
+    best_accuracy - current best accuracy, default 0.
     '''
 
     # Define your execution device
