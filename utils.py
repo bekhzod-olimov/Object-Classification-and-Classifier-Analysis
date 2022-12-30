@@ -48,6 +48,16 @@ def validation(model, val_dl, device):
     return accuracy
     
 def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epochs, best_accuracy):
+    
+    '''
+    Gets a model, train dataloader, validation dataloader, optimizer, 
+    loss_function, number of epochs, and device type and trains the model.
+    
+    Arguments:
+    model - a trained model;
+    val_dl - validation dataloader;
+    device - device type.
+    '''
 
     # Define your execution device
     print(f"The model will be running on {device} device")
