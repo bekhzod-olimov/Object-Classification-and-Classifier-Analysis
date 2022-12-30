@@ -45,7 +45,7 @@ def validation(model, val_dl, device):
             total += labels.size(0)
             accuracy += (predicted == labels).sum().item()
     
-    # compute the accuracy over all test images
+    # Compute the accuracy over all test images
     accuracy = (100 * accuracy / total)
     print(f"Validation accuracy is: {accuracy:.3f}")
     
