@@ -77,7 +77,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
         # Get through the training dataloader
         for i, batch in tqdm(enumerate(tr_dl, 0)):
             
-            # Get the inputs an
+            # Get the inputs and change them to device
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
