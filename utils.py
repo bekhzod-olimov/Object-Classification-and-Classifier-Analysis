@@ -86,9 +86,9 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
             optimizer.zero_grad()
             # Predict classes using images from the training dataloader
             outputs = model(images)
-            # compute the loss based on model output and real labels
+            # Compute the loss based on model output and real labels
             loss = criterion(outputs, labels)
-            # backpropagate the loss
+            # Backpropagate the loss
             loss.backward()
             # adjust parameters based on the calculated gradients
             optimizer.step()
