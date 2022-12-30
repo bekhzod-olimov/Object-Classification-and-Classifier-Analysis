@@ -31,8 +31,7 @@ def validation(model, val_dl, device):
     # Set the accuracy and total to 0
     accuracy, total = 0, 0
 
-    with torch.no_grad():
-        
+    with torch.no_grad():        
         for i, data in enumerate(val_dl):
 
             images, labels = data
