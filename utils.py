@@ -98,7 +98,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
         accuracy = validation(model, val_dl, device)
         print(f"For epoch {epoch+1} the validation accuracy over the whole validation set is {accuracy:.2f}%")
         
-        # we want to save the model if the accuracy is the best
+        # We want to save the model if the accuracy is the best
         print(f"The best validation accuracy on epoch {epoch+1} is {best_accuracy:.2f}%")
         if accuracy > best_accuracy:
             saveModel(model)
