@@ -90,7 +90,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
             loss = criterion(outputs, labels)
             # Backpropagate the loss
             loss.backward()
-            # adjust parameters based on the calculated gradients
+            # Adjust parameters based on the calculated gradients
             optimizer.step()
             running_loss += loss.item()     # extract the loss value
 
