@@ -94,7 +94,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
             optimizer.step()
             running_loss += loss.item()     # extract the loss value
 
-        # Compute and print the average accuracy fo this epoch when tested over all 10000 test images
+        # Perform validation and get the accuracy score
         accuracy = validation(model, val_dl, device)
         print(f"For epoch {epoch+1} the validation accuracy over the whole validation set is {accuracy:.2f}%")
         
