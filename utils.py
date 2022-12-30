@@ -27,6 +27,8 @@ def validation(model, val_dl, device):
     
     # Change to evaluation mode
     model.eval()
+    
+    # Set the accuracy and total to 0
     accuracy, total = 0, 0
 
     with torch.no_grad():
