@@ -3,6 +3,13 @@ from tqdm import tqdm
 
 def saveModel(model):
     
+    '''
+    Gets argment to distinguish train or validation transformations and return transforms.
+    
+    Arguments:
+    train - train transformation if True, else validation transformations.
+    '''
+    
     path = "./best_model.pth"
     torch.save(model.state_dict(), path)
 
