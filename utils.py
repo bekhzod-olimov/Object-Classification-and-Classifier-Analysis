@@ -74,9 +74,11 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
         # Set running loss and accuracy
         running_loss, running_acc = 0, 0
         
-        for i, (images, labels) in tqdm(enumerate(tr_dl, 0)):
+        # Get through the training dataloader
+        for i, batch in tqdm(enumerate(tr_dl, 0)):
             
-            # get the inputs
+            # Get the inputs an
+            images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
 
