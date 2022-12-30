@@ -7,7 +7,7 @@ def saveModel(model):
     Gets trained model and saves it as best_model.
     
     Arguments:
-    train - train transformation if True, else validation transformations.
+    model - trained model.
     '''
     
     path = "./best_model.pth"
