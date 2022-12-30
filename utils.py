@@ -82,9 +82,9 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
             images = images.to(device)
             labels = labels.to(device)
 
-            # zero the parameter gradients
+            # Zero the parameter gradients
             optimizer.zero_grad()
-            # predict classes using images from the training set
+            # Predict classes using images from the training dataloader
             outputs = model(images)
             # compute the loss based on model output and real labels
             loss = criterion(outputs, labels)
