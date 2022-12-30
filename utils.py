@@ -71,6 +71,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
     
     for epoch in range(epochs):  # loop over the dataset multiple times
         
+        # Set running loss and accuracy
         running_loss, running_acc = 0, 0
         
         for i, (images, labels) in tqdm(enumerate(tr_dl, 0)):
