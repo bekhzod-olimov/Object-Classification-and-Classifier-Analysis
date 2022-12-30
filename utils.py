@@ -4,7 +4,7 @@ from tqdm import tqdm
 def saveModel(model):
     
     '''
-    Gets argment to distinguish train or validation transformations and return transforms.
+    Gets trained model and saves it as best_model.
     
     Arguments:
     train - train transformation if True, else validation transformations.
