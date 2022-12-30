@@ -7,7 +7,7 @@ def saveModel(model):
     Gets trained model and saves it as best_model.
     
     Arguments:
-    model - trained model.
+    model - a trained model.
     '''
     
     path = "./best_model.pth"
@@ -19,7 +19,9 @@ def validation(model, val_dl, device):
     Gets a model, validation dataloader, and device type; and performs validation process.
     
     Arguments:
-    model - trained model.
+    model - a trained model;
+    val_dl - validation dataloader;
+    device - device type.
     '''
     
     model.eval()
