@@ -14,8 +14,9 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
     dl - dataloader.
     '''
     
+    # Create lists for predictions, ground truths, and images
     predictions, gts, images = [], [], []
-    model = timm.create_model(model_name, pretrained=True, num_classes=num_classes)
+    model = timm.create_model(model_name, pretrained = True, num_classes = num_classes)
     model.to(device)
     model.load_state_dict(torch.load(checkpoint_path))
     print("Model checkpoint loaded successfully!")
