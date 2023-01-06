@@ -23,10 +23,11 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
     # Move the model to gpu
     model.to(device)
     
-    # 
+    # Load checkpoint from the path
     model.load_state_dict(torch.load(checkpoint_path))
     print("Model checkpoint loaded successfully!")
     
+    # Set initial correct cases and total samples
     correct, total = 0, 0
     for idx, batch in tqdm(enumerate(dl)):
         ims, lbls = batch
