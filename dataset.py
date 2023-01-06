@@ -24,10 +24,12 @@ def get_dl(root, bs, t):
     print(f"Number of train set images: {len(tr_ds)}")
     print(f"Number of validation set images: {len(val_ds)}")
     
-    # 
+    # Get class names
     cls_names = list(ds.class_to_idx.keys())
+    # Get total number of classes
     num_classes = len(cls_names)
     
+    # Create train and validation dataloaders
     tr_dl = DataLoader(tr_ds, batch_size=bs, shuffle=True)
     val_dl = DataLoader(val_ds, batch_size=bs, shuffle=False)
     
