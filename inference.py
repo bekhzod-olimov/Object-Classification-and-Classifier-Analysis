@@ -39,7 +39,11 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
         # Get predictions
         preds = model(ims.to(device))
         images.extend(ims.to(device))
+        
+        # Get classes with max values
         _, predicted = torch.max(preds.data, 1)
+        
+        # Add to predictions list
         predictions.extend(predicted)
         gts.extend(lbls.to(device))
         total += lbls.size(0)
