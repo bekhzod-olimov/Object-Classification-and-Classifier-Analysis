@@ -45,10 +45,17 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
         
         # Add to predictions list
         predictions.extend(predicted)
+        
+        # Add gt to gts list
         gts.extend(lbls.to(device))
+        
+        # Add batch size to total number of samples
         total += lbls.size(0)
+        
+        # Get correct predictions
         correct += (predicted == lbls.to(device)).sum().item()        
         
     print(f'Accuracy of the network on the {total} test images: {100 * correct // total} %')  
     
+    # Return model, predictions, ground truths, and images
     return model, torch.stack(predictions), torch.stack(gts), torch.stack(images)
