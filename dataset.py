@@ -13,7 +13,8 @@ def get_dl(root, bs, t):
     t - transformations;
     '''
     
-    ds = ImageFolder(root=root, transform=t)
+    # Get dataset from the directory
+    ds = ImageFolder(root = root, transform = t)
     ds_length = len(ds)
     tr_ds, val_ds = torch.utils.data.random_split(ds, [int(ds_length * 0.8), ds_length-int(ds_length * 0.8)])
     print(f"Number of train set images: {len(tr_ds)}")
