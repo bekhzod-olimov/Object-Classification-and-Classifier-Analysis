@@ -16,8 +16,14 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
     
     # Create lists for predictions, ground truths, and images
     predictions, gts, images = [], [], []
+    
+    # Create a model
     model = timm.create_model(model_name, pretrained = True, num_classes = num_classes)
+    
+    # Move the model to gpu
     model.to(device)
+    
+    # 
     model.load_state_dict(torch.load(checkpoint_path))
     print("Model checkpoint loaded successfully!")
     
