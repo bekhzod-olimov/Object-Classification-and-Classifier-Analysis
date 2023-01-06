@@ -29,8 +29,14 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
     
     # Set initial correct cases and total samples
     correct, total = 0, 0
+    
+    # Go through the dataloader
     for idx, batch in tqdm(enumerate(dl)):
+        
+        # Get images and gt labels
         ims, lbls = batch
+        
+        # Get predictions
         preds = model(ims.to(device))
         images.extend(ims.to(device))
         _, predicted = torch.max(preds.data, 1)
