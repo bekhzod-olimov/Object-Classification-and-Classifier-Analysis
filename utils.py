@@ -77,9 +77,12 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
 
     # Define your execution device
     print(f"The model will be running on {device} device")
+    
+    # Move the model to gpu
     model.to(device)
     
-    for epoch in range(epochs):  # loop over the dataset multiple times
+    # Start training
+    for epoch in range(epochs): 
         
         # Set running loss and accuracy
         running_loss, running_acc = 0, 0
