@@ -90,7 +90,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
         # Get through the training dataloader
         for i, batch in tqdm(enumerate(tr_dl, 0)):
             
-            # Get the inputs and change them to device
+            # Get the inputs and move them to device
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
@@ -111,10 +111,9 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
         accuracy = validation(model, val_dl, device)
         print(f"For epoch {epoch+1} the validation accuracy over the whole validation set is {accuracy:.2f}%")
         
-        # We want to save the model if the accuracy is the best
+        # Save the model with the best accuracy
         print(f"The best validation accuracy on epoch {epoch+1} is {best_accuracy:.2f}%")
         if accuracy > best_accuracy:
             saveModel(model)
             best_accuracy = accuracy
             print(f"The best validation accuracy on epoch {epoch+1} is {best_accuracy:.2f}%")
-    
