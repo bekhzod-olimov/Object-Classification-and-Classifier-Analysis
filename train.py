@@ -18,8 +18,10 @@ def run(args):
     # Set train variable
     epochs = 50
     
-    # Get transformations and data
+    # Get train and validation transformations 
     train_transformations, valid_transformations= get_transforms(train=True), get_transforms(train=False)
+    
+    # Get class names, number of classes, train and validation dataloaders
     cls_names, num_classes, tr_dl, val_dl = get_dl(root, bs, valid_transformations)
     print(f"Number of classes in the dataset: {num_classes}")
     
