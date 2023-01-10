@@ -8,6 +8,8 @@ def get_transforms(train=False):
     Arguments:
     train - train transformation if True, else validation transformations.
     '''
+    
+    # Train transformations
     t_tr = tfs.Compose([tfs.Resize((224,224)),
                        tfs.RandomCrop((120, 120)),
                        tfs.RandomHorizontalFlip(p=0.3),
@@ -16,6 +18,7 @@ def get_transforms(train=False):
                        tfs.Grayscale(num_output_channels=3),
                        tfs.ToTensor()])
     
+    # Validation transformations
     t_val = tfs.Compose([tfs.Resize((224,224)),
                          tfs.Grayscale(num_output_channels=3),
                          tfs.ToTensor()])
