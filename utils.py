@@ -9,8 +9,10 @@ def saveModel(model):
     Arguments:
     model - a trained model.
     '''
-    # Set the path
+    
+    # Set the path to save the trained model
     path = "./best_model.pth"
+    
     # Save the model
     torch.save(model.state_dict(), path)
 
@@ -35,14 +37,18 @@ def validation(model, val_dl, device):
     with torch.no_grad():        
         for i, data in enumerate(val_dl):
 
+            # Get the data and gt 
             images, labels = data
-            images = images.to(device)
-            labels = labels.to(device)
-            # run the model on the test set to predict labels
+            
+            # Move them the gpu
+            images, labels = images.to(device), labels.to(device)
+            # Get the model predictions
             outputs = model(images)
-            # the label with the highest energy will be our prediction
+            # Select the prediction with the highest value
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
+            
+            # Get the accuracy
             accuracy += (predicted == labels).sum().item()
     
     # Compute the accuracy over all test images
