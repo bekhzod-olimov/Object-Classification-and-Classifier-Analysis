@@ -6,15 +6,17 @@ from tqdm import tqdm
 
 def run(args):
     
+    # Get train arguments    
     root = args.root
     bs = args.batch_size
     device = args.device
     lr = args.learning_rate
     model_name = args.model_name
-    epochs = 50
-    
     argstr = yaml.dump(args.__dict__, default_flow_style=False)
     print(f"\nTraining Arguments:\n{argstr}\n")
+    
+    # Set train variable
+    epochs = 50
     
     # Get transformations and data
     train_transformations, valid_transformations= get_transforms(train=True), get_transforms(train=False)
