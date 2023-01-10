@@ -30,8 +30,10 @@ def run(args):
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
     
-    # Train model    
+    # Set initial best accuracy
     best_accuracy = 0.
+    
+    # Train model
     train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epochs, best_accuracy)   
     
 if __name__ == "__main__":
