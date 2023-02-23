@@ -4,10 +4,12 @@ from tqdm import tqdm
 def saveModel(model):
     
     '''
+    
     Gets trained model and saves it as best_model.
     
     Arguments:
-    model - a trained model.
+        model - a trained model.
+        
     '''
     
     # Set the path to save the trained model
@@ -19,12 +21,15 @@ def saveModel(model):
 def validation(model, val_dl, device):
     
     '''
+    
     Gets a model, validation dataloader, and device type; and performs validation process and return accuracy over the whole dataloder.
     
     Arguments:
-    model - a trained model;
-    val_dl - validation dataloader;
-    device - device type.
+    
+        model - a trained model;
+        val_dl - validation dataloader;
+        device - device type.
+    
     '''
     
     # Change to evaluation mode
@@ -60,23 +65,26 @@ def validation(model, val_dl, device):
 def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epochs, best_accuracy):
     
     '''
+    
     Gets a model, train dataloader, validation dataloader, optimizer, 
     loss_function, number of epochs, and device type and trains the model.
     
     Arguments:
-    model - a trained model;
-    tr_dl - train dataloader;
-    val_dl - validation dataloader;
-    num_classes - number of classes;
-    criterion - loss function;
-    optimizer - optimizer type;
-    device - device type;
-    epochs - number of epoch to train the model;
-    best_accuracy - current best accuracy, default 0.
+    
+        model - a trained model;
+        tr_dl - train dataloader;
+        val_dl - validation dataloader;
+        num_classes - number of classes;
+        criterion - loss function;
+        optimizer - optimizer type;
+        device - device type;
+        epochs - number of epoch to train the model;
+        best_accuracy - current best accuracy, default 0.
+    
     '''
 
     # Define your execution device
-    print(f"The model will be running on {device} device")
+    print(f"The model will be running on {device} device\n")
     
     # Move the model to gpu
     model.to(device)
