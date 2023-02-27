@@ -5,7 +5,7 @@ def saveModel(model):
     
     '''
     
-    Gets trained model and saves it as best_model.
+    This function gets trained model and saves it as best_model.
     
     Arguments:
         model - a trained model.
@@ -22,7 +22,7 @@ def validation(model, val_dl, device):
     
     '''
     
-    Gets a model, validation dataloader, and device type; and performs validation process and return accuracy over the whole dataloder.
+    This function gets a model, validation dataloader, and device type; and performs validation process and return accuracy over the whole dataloder.
     
     Arguments:
     
@@ -39,11 +39,12 @@ def validation(model, val_dl, device):
     accuracy, total = 0, 0
 
     # Conduct validation without gradients
-    with torch.no_grad():        
-        for i, data in enumerate(val_dl):
+    with torch.no_grad(): 
+        
+        for i, batch in enumerate(val_dl):
 
             # Get the data and gt 
-            images, labels = data
+            images, labels = batch
             
             # Move them the gpu
             images, labels = images.to(device), labels.to(device)
@@ -66,7 +67,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
     
     '''
     
-    Gets a model, train dataloader, validation dataloader, optimizer, 
+    This function gets a model, train dataloader, validation dataloader, optimizer, 
     loss_function, number of epochs, and device type and trains the model.
     
     Arguments:
@@ -100,8 +101,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
             
             # Get the inputs and move them to device
             images, labels = batch
-            images = images.to(device)
-            labels = labels.to(device)
+            images, labels = images.to(device), labels.to(device)
 
             # Zero the parameter gradients
             optimizer.zero_grad()
