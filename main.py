@@ -46,13 +46,19 @@ def run(args):
     
 if __name__ == "__main__":
     
+    # Initialize argument parser
     parser = argparse.ArgumentParser(description = 'Object Classification Training Arguments')
+    
+    # Add arguments
     parser.add_argument("-r", "--root", type = str, default = 'path/to/dataset', help = "Path to the data")
     parser.add_argument("-bs", "--batch_size", type = int, default = 64, help = "Mini-batch size")
     parser.add_argument("-mn", "--model_name", type = str, default = 'rexnet_150', help = "Model name for backbone")
     parser.add_argument("-d", "--device", type = str, default = 'cuda:3', help = "GPU device number")
     parser.add_argument("-lr", "--learning_rate", type = float, default = 1e-3, help = "Learning rate value")
     parser.add_argument("-e", "--epochs", type = int, default = 50, help = "Train epochs number")
+    
+    # Parse the arguments
     args = parser.parse_args() 
     
+    # Run the code
     run(args) 
