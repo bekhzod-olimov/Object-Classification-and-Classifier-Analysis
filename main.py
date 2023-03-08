@@ -7,6 +7,15 @@ from tqdm import tqdm
 
 def run(args):
     
+    """
+    This function runs the main script based on the arguments.
+    
+    Argument:
+    
+        args - parsed arguments.
+    
+    """
+    
     # Get train arguments    
     root = args.root
     bs = args.batch_size
