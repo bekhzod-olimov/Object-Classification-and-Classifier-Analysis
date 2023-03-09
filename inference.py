@@ -1,3 +1,4 @@
+# Import libraries
 import torch, timm
 
 def inference(model_name, num_classes, checkpoint_path, device, dl):
@@ -14,6 +15,13 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
         checkpoint_path - path to the trained model;
         device          - device type;
         dl              - dataloader.
+        
+    Outputs:
+    
+        model           - a model for inference, model;
+        predictions     - predictions made by the model, tensor;
+        gts             - ground truths, tensor;
+        images          - images, tensor
         
     """
     
