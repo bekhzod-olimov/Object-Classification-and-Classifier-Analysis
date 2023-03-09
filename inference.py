@@ -2,17 +2,20 @@ import torch, timm
 
 def inference(model_name, num_classes, checkpoint_path, device, dl):
     
-    '''
-    Gets a model name, number of classes for the dataset, path to the trained model, device type, and dataloader;
+    """
+    
+    This function gets a model name, number of classes for the dataset, path to the trained model, device type, and dataloader;
     performs inference and returns model, predictions, target labels, and images.
     
     Arguments:
-    model_name - model name for training;
-    num_classes - number of classes for the dataset;
-    checkpoint_path - path to the trained model;
-    device - device type;
-    dl - dataloader.
-    '''
+    
+        model_name      - model name for training;
+        num_classes     - number of classes for the dataset;
+        checkpoint_path - path to the trained model;
+        device          - device type;
+        dl              - dataloader.
+        
+    """
     
     # Create lists for predictions, ground truths, and images
     predictions, gts, images = [], [], []
