@@ -1,12 +1,21 @@
+# Import library
 from torchvision import transforms as tfs
 
-def get_transforms(train=False):
+def get_transforms(train = False):
     
     '''
-    Gets argment to distinguish train or validation transformations and return transforms.
     
-    Arguments:
-    train - train transformation if True, else validation transformations.
+    This function gets argment to distinguish train or validation transformations and return transforms.
+    
+    Argument:
+        
+        train - train transformation if True, else validation transformations.
+        
+    Outputs:
+    
+        t_tr  - train transformations;
+        t_val - validation transformations;
+        
     '''
     
     # Train transformations
