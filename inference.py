@@ -10,11 +10,11 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
     
     Arguments:
     
-        model_name      - model name for training;
-        num_classes     - number of classes for the dataset;
-        checkpoint_path - path to the trained model;
-        device          - device type;
-        dl              - dataloader.
+        model_name      - model name for training, str;
+        num_classes     - number of classes for the dataset, int;
+        checkpoint_path - path to the trained model, str;
+        device          - device type, str;
+        dl              - dataloader, torch dataloader instance.
         
     Outputs:
     
