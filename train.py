@@ -1,3 +1,4 @@
+# Import libraries
 import timm, torch
 from tqdm import tqdm
 
@@ -7,7 +8,8 @@ def saveModel(model):
     
     This function gets trained model and saves it as best_model.
     
-    Arguments:
+    Argument:
+    
         model - a trained model.
         
     '''
@@ -26,9 +28,13 @@ def validation(model, val_dl, device):
     
     Arguments:
     
-        model - a trained model;
-        val_dl - validation dataloader;
-        device - device type.
+        model     - a trained model;
+        val_dl    - validation dataloader;
+        device    - device type.
+        
+    Output:
+    
+        accuracy  - accuracy of the model on the validation set.
     
     '''
     
