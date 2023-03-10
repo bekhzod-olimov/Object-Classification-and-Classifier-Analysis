@@ -4,10 +4,10 @@ from dataset import get_dl
 from train import train
 from tqdm import tqdm
 
-
 def run(args):
     
     """
+    
     This function runs the main script based on the arguments.
     
     Argument:
