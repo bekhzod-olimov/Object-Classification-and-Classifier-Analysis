@@ -1,3 +1,4 @@
+# Import libraries
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 import torch
@@ -6,19 +7,20 @@ def get_dl(root, bs, t):
     
     '''
     
-    Gets a path to the data and returns class names, number of classes, train dataloader, and validation dataloader.
+    This function gets a path to the data and returns class names, number of classes, train dataloader, and validation dataloader.
     
     Arguments:
-        root - path to the images;
-        bs - batch size of the dataloaders;
-        t - transformations;
+    
+        root         - path to the images;
+        bs           - batch size of the dataloaders;
+        t            - transformations;
         
     Outputs:
     
-        cls_names - names of the classes in the dataset;
-        num_classes - number of the classes in the dataset;
-        tr_dl - train dataloader;
-        val_dl - validation dataloader.
+        cls_names    - names of the classes in the dataset;
+        num_classes  - number of the classes in the dataset;
+        tr_dl        - train dataloader;
+        val_dl       - validation dataloader.
         
     '''
     
