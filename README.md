@@ -4,7 +4,7 @@ Classify objects using DL-based image classification model [rexnet_150](https://
 
 ### Create virtual environment
 ```python
-conda create -n <ENV_NAME> python=3.9
+conda create -n <ENV_NAME> python = 3.9
 conda activate <ENV_NAME>
 pip install -r requirements.txt
 ```
@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 ### Run training 
 ```python
-python train.py --batch_size=64 --lr=3e-4 --model_name="efficientnet_b3a"
+python train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
 ```
 
 ### Results
