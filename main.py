@@ -1,3 +1,4 @@
+# Import libraries
 import torch, argparse, yaml, timm, gdown
 from transforms import get_transforms
 from dataset import get_dl
@@ -13,6 +14,10 @@ def run(args):
     Argument:
     
         args - parsed arguments.
+        
+    Output:
+    
+        train process.
     
     """
     
