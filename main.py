@@ -17,12 +17,6 @@ def run(args):
     """
     
     # Get train arguments    
-    root = args.root
-    bs = args.batch_size
-    device = args.device
-    lr = args.learning_rate
-    model_name = args.model_name
-    epochs = args.epochs
     argstr = yaml.dump(args.__dict__, default_flow_style=False)
     print(f"\nTraining Arguments:\n{argstr}")
     
@@ -30,19 +24,19 @@ def run(args):
     train_transformations, valid_transformations= get_transforms(train=True), get_transforms(train=False)
     
     # Get class names, number of classes, train and validation dataloaders
-    cls_names, num_classes, tr_dl, val_dl = get_dl(root, bs, valid_transformations)
+    cls_names, num_classes, tr_dl, val_dl = get_dl(args.root, args.batch_size, valid_transformations)
     print(f"Number of classes in the dataset: {num_classes}\n")
     
     # Initialize model, loss_function, and optimizer    
-    model = timm.create_model(model_name, pretrained=True, num_classes=num_classes)
+    model = timm.create_model(args.model_name, pretrained=True, num_classes=num_classes)
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
     
     # Set initial best accuracy
     best_accuracy = 0.
     
     # Train model
-    train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epochs, best_accuracy)   
+    train(model, tr_dl, val_dl, num_classes, criterion, optimizer, args.device, args.epochs, best_accuracy)   
     
 if __name__ == "__main__":
     
