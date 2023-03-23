@@ -41,8 +41,8 @@ def get_dl(root, bs, t):
     num_classes = len(cls_names)
     
     # Create train and validation dataloaders
-    tr_dl = DataLoader(tr_ds, batch_size=bs, shuffle=True)
-    val_dl = DataLoader(val_ds, batch_size=bs, shuffle=False)
+    tr_dl = DataLoader(tr_ds, batch_size = bs, shuffle = True)
+    val_dl = DataLoader(val_ds, batch_size = bs, shuffle = False)
     
     # Return class names, total number of classes, train and validation dataloaders
     return cls_names, num_classes, tr_dl, val_dl
