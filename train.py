@@ -152,8 +152,12 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
         # Save the model with the best accuracy
         print(f"The best validation accuracy on epoch {epoch} is {best_accuracy:.2f}%")
         if val_accuracy > best_accuracy:
+            
+            # Change best accuracy value
             best_accuracy = val_accuracy
+            # Save the model with the best accuracy
             saveModel(model, save_path, best_accuracy, epoch+1)
             print(f"The best validation accuracy on epoch {epoch+1} is {best_accuracy:.2f}%")
             
+    # Return dictionary with train results
     return {"tr_loss": tr_loss, "tr_accs": tr_accs, "val_loss": val_loss, "val_accs": val_accs}
