@@ -14,8 +14,10 @@ def saveModel(model, save_path, best_accuracy, epoch):
         
     '''
     
-    # Set the path to save the trained model
+    # Create a dir to save the best model
     os.makedirs(f"{save_path}", exist_ok = True)
+    
+    # Set the path to save the trained model
     path = f"{save_path}/best_model_{epoch}_{best_accuracy:.1f}.pth"
     
     # Save the model
@@ -42,7 +44,7 @@ def validation(model, criterion, val_dl, device):
     # Change to evaluation mode
     model.eval()
     
-    # Set the accuracy and total to 0
+    # Set the loss, accuracy and total to 0
     running_loss, running_acc, total = 0, 0, 0
 
     # Conduct validation without gradients
@@ -57,22 +59,21 @@ def validation(model, criterion, val_dl, device):
             images, labels = images.to(device), labels.to(device)
             # Get the model predictions
             outputs = model(images)
-            
+            # Compute loss and add to running loss
             loss = criterion(outputs, labels)
             running_loss += loss.item() 
             
             # Select the prediction with the highest value
             _, predicted = torch.max(outputs.data, 1)
+            
+            # Add to total number of samples
             total += labels.size(0)
             
             # Get the accuracy
             running_acc += (predicted == labels).sum().item()
     
-    # Compute the accuracy over all test images
-    accuracy = (100 * running_acc / total)
-    loss = (running_loss / total)
-    
-    return loss, accuracy
+    # Compute the loss and accuracy over all test images and return the values
+    return (running_loss / total), (100 * running_acc / total)
     
 def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epochs, best_accuracy, save_path):
     
