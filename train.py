@@ -99,6 +99,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
     # Define your execution device
     print(f"The model will be running on {device} device\n")
     
+    # Initialize lists to track metrics
     tr_loss, val_loss, tr_accs, val_accs = [], [], [], []
     
     # Move the model to gpu
@@ -123,23 +124,28 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
             # Predict classes using images from the training dataloader
             outputs = model(images)
             
+            # Get the accuracy
             _, predicted = torch.max(outputs.data, 1)
+            running_acc += (predicted == labels).sum().item()
+            
             # Compute the loss based on model output and real labels
             loss = criterion(outputs, labels)
             running_loss += loss.item()     # extract the loss value
-            # Get the accuracy
-            running_acc += (predicted == labels).sum().item()
+            
             # Backpropagate the loss
             loss.backward()
             # Adjust parameters based on the calculated gradients
             optimizer.step()
 
+        # Add train loss and accuracy to the lists
         tr_loss.append(running_loss / total)
         tr_accs.append(running_acc / total)
         # Perform validation and get the accuracy score
         val_loss_, val_accuracy = validation(model, criterion, val_dl, device)
         print(f"\nValidation accuracy on epoch {epoch+1} is {val_accuracy:.3f}%")
         print(f"Validation loss on epoch {epoch+1} is {val_loss_:.3f}\n")
+        
+        # Add validation loss and accuracy to the lists
         val_loss.append(val_loss_)
         val_accs.append(val_accuracy)
         
