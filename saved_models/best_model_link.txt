@@ -1,0 +1,1 @@
+Saved model checkpoint with the best validation accuracy: https://drive.google.com/file/d/1T6joFbxQN1aWesmCOWAn07t8kmoabIH8/view?usp=share_link
