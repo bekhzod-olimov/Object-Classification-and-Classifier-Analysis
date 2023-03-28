@@ -30,3 +30,10 @@ python train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
 ![Capture3](https://user-images.githubusercontent.com/50166164/209301970-7059fa1e-0259-40a3-a08c-8c468fad95f6.PNG)
 ![Capture4](https://user-images.githubusercontent.com/50166164/209301976-61cff480-5b13-46f7-9f71-9f04d17719f3.PNG)
 ![Capture5](https://user-images.githubusercontent.com/50166164/209301983-d51197d7-bd99-4bc0-a2c8-7b303ce4d2bd.PNG)
+
+### Run classficatio demo
+
+
+```python
+streamlit run demo.py
+```
