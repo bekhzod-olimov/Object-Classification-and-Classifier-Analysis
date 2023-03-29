@@ -33,7 +33,7 @@ python train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
 
 ### Run classficatio demo
 
-After completing train process choose a model checkpoint with the best accuracy and do inference using random images from the Internet by running the following script.
+After completing train process choose a model checkpoint with the best accuracy and do inference using random images from the Internet by running the following script. There are several sample images in sample_ims folder of this repo.
 
 ```python
 streamlit run demo.py --checkpoint_path 'path/to/checkpoint'
