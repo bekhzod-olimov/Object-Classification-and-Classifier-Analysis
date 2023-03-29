@@ -1,3 +1,4 @@
+# Import libraries
 import torch, pickle, timm, argparse
 import streamlit as st
 from transforms import get_transforms  
@@ -7,9 +8,23 @@ st.set_page_config(layout='wide')
 
 def run(args):
     
-    with open('cls_names.pkl', 'rb') as f:
-        cls_names = pickle.load(f)
+    """
+    
+    This function gets parsed arguments and runs the script.
+    
+    Argument:
+    
+        args - parsed arguments, parser object.
+    
+    """
+    
+    # Get class names list
+    with open('cls_names.pkl', 'rb') as f: cls_names = pickle.load(f)
+    
+    # Initialize data transformations 
     tfs = get_transforms(train = False)
+    
+    # Get number of classes in the dataset
     num_classes = len(cls_names)
     
 #     ds = ImageFolder(root = "/home/ubuntu/workspace/bekhzod/triplet-loss-pytorch/pytorch_lightning/data/simple_classification", transform = tfs)
