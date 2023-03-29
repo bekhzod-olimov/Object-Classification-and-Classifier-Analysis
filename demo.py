@@ -35,15 +35,28 @@ def run(args):
 #     with open('cls_names.pkl', 'wb') as f: 
 #         pickle.dump(cls_names, f)
     
+    # Load pretrained model 
     m = load_model(args.model_name, num_classes, args.checkpoint_path)
+    
+    # Write title 
     st.title("Object Recognition")
+    
+    # Initialize file (image) loader
     file = st.file_uploader('Please upload your image')
     
+    # Once the file is uploaded
     if file:
+        
+        # Get an image and predicted class 
         im, out = predict(m, file, tfs, cls_names)
 
+        # Write descriptions
         st.write(f"Input Image: ")
+        
+        # Visualize the image
         st.image(im)
+        
+        # Write the predicted class name
         st.write(f"Predicted as {out}")
         
 @st.cache_data
