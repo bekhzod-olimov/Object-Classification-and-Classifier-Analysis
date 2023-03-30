@@ -1,15 +1,15 @@
 # Import libraries
+import torch, torchmetrics, wandb, timm, argparse, yaml
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
-import torch, torchmetrics, wandb, timm, argparse, yaml
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from pytorch_lightning.callbacks import ModelCheckpoint, Callback
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import random_split, DataLoader
 from torchvision import transforms as tfs
 from torchvision.datasets import ImageFolder
 from torchvision.datasets import CIFAR10
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks import ModelCheckpoint, Callback
 
 class CustomDataset(pl.LightningDataModule):
     
@@ -29,14 +29,12 @@ class CustomDataset(pl.LightningDataModule):
     
     """
     
-    def __init__(self, root, bs, im_dims=(224, 224)):
+    def __init__(self, root, bs, im_dims = (224, 224)):
         
         super().__init__()
         self.root, self.bs = root, bs
 
-        self.transform = tfs.Compose([tfs.Resize((im_dims)),
-                         tfs.Grayscale(num_output_channels=3),
-                         tfs.ToTensor()])
+        self.transform = tfs.Compose([tfs.Resize((im_dims)), tfs.Grayscale(num_output_channels = 3), tfs.ToTensor()])
     
     def check(self, path): 
         
