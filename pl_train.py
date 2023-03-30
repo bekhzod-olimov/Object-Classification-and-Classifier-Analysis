@@ -1,3 +1,4 @@
+# Import libraries
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 import torch, torchmetrics, wandb, timm, argparse, yaml
@@ -11,6 +12,22 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint, Callback
 
 class CustomDataset(pl.LightningDataModule):
+    
+    """
+    
+    This class gets root, batch size, image dimensions and returns dataset.
+    
+    Arguments:
+    
+        root    - path to directory with data, str;
+        bs      - batch size, int;
+        im_dims - image dimensions, tuple -> int.
+        
+    Output:
+    
+        ds     - dataset, torch dataset object.
+    
+    """
     
     def __init__(self, root, bs, im_dims=(224, 224)):
         
