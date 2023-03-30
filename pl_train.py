@@ -32,11 +32,20 @@ class CustomDataset(pl.LightningDataModule):
     def __init__(self, root, bs, im_dims = (224, 224)):
         
         super().__init__()
+        
+        # Get data root and batch size
         self.root, self.bs = root, bs
 
+        # Initialize transformations
         self.transform = tfs.Compose([tfs.Resize((im_dims)), tfs.Grayscale(num_output_channels = 3), tfs.ToTensor()])
     
     def check(self, path): 
+        
+        """
+        
+        This function gets an image path and checks whether it is a valid image filetype or not.
+        
+        """
         
         valid_types = [".png", ".jpg", ".jpeg"]
         for valid_type in valid_types:
