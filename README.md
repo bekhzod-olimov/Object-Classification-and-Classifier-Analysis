@@ -20,7 +20,7 @@ python train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
 
 ### Run training with PyTorch Lightning (Parallel Training)
 ```python
-python train_pl.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
+python pl_train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3a"
 ```
 
 ### Results
