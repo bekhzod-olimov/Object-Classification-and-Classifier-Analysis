@@ -1,15 +1,14 @@
 # Import libraries
+import torch, torchmetrics, wandb, timm, argparse, yaml
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
-import torch, torchmetrics, wandb, timm, argparse, yaml
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from pytorch_lightning.callbacks import ModelCheckpoint, Callback
 from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import random_split, DataLoader
 from torchvision import transforms as tfs
-from torchvision.datasets import ImageFolder
-from torchvision.datasets import CIFAR10
-from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from pytorch_lightning.callbacks import ModelCheckpoint, Callback
+from torchvision.datasets import ImageFolder, CIFAR100, CIFAR10
 
 class CustomDataset(pl.LightningDataModule):
     
@@ -31,12 +30,29 @@ class CustomDataset(pl.LightningDataModule):
         self.root, self.bs = root, bs
 
         # Initialize transformations
-        self.transform = tfs.Compose([tfs.Resize((im_dims)),
+        self.transform = tfs.Compose([
+                         tfs.Resize((im_dims)),
                          tfs.Grayscale(num_output_channels = 3),
-                         tfs.ToTensor()])
+                         tfs.ToTensor()]
+                         )
     
     def check(self, path): 
         
+        """
+        
+        This function gets an image path and checks wheter it is a valid image file or not.
+        
+        Argument:
+        
+            path  - an image path, str.
+            
+        Output:
+        
+            valid - whether or not the path is a valid image, bool.
+        
+        """
+        
+        # Initialize a list with valid image types
         valid_types = [".png", ".jpg", ".jpeg"]
         for valid_type in valid_types:
             if valid_type in path.lower():
@@ -55,7 +71,7 @@ class CustomDataset(pl.LightningDataModule):
         ds_len = len(self.ds)
         tr_len, val_len = int(ds_len * 0.8), int(ds_len * 0.1) 
         # Split the dataset into train and validation datasets
-        self.tr_ds, self.val_ds, self.test_ds = torch.utils.data.random_split(self.ds, [tr_len, val_len, ds_len - (tr_len + val_len)])
+        self.tr_ds, self.val_ds, self.test_ds = random_split(self.ds, [tr_len, val_len, ds_len - (tr_len + val_len)])
         
         print(f"Number of train set images: {len(self.tr_ds)}")
         print(f"Number of validation set images: {len(self.val_ds)}")
@@ -69,6 +85,44 @@ class CustomDataset(pl.LightningDataModule):
 
     def test_dataloader(self): return DataLoader(self.test_ds, batch_size=self.bs, shuffle=False)
 
+class CIFAR10DataModule(pl.LightningDataModule):
+    
+    def __init__(self, bs, data_dir: str = './'):
+        super().__init__()
+        self.data_dir = data_dir
+        self.bs = bs
+        self.transform = tfs.Compose([
+            tfs.Resize((224, 224)),
+            tfs.ToTensor(),
+            tfs.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        ])
+        self.dims = (3, 32, 32)
+        self.num_classes = 10
+        
+    def _setup(self):
+        
+        self.ds = CIFAR10(self.data_dir, train = True, download=True, transform = self.transform)
+        self.test_ds = CIFAR10(self.data_dir, train = False, download=True, transform = self.transform)
+        # Split the dataset into train and validation datasets
+        self.tr_ds, self.val_ds = random_split(self.ds, [int(len(self.ds)*0.9), int(len(self.ds)) - int(len(self.ds)*0.9)])
+
+        # Get class names
+        cls_names = None
+        num_classes = 100
+        
+        print(f"Number of train set images: {len(self.tr_ds)}")
+        print(f"Number of validation set images: {len(self.val_ds)}")
+        print(f"Number of test set images: {len(self.test_ds)}\n")
+        
+        return cls_names, num_classes
+    
+    def train_dataloader(self): return DataLoader(self.tr_ds, batch_size=self.bs, shuffle=True)
+
+    def val_dataloader(self): return DataLoader(self.val_ds, batch_size=self.bs, shuffle=False)
+
+    def test_dataloader(self): return DataLoader(self.test_ds, batch_size=self.bs, shuffle=False)
+    
+    
 class LitModel(pl.LightningModule):
     
     def __init__(self, input_shape, model_name, num_classes, learning_rate=2e-4):
@@ -127,9 +181,9 @@ class LitModel(pl.LightningModule):
 
 class ImagePredictionLogger(Callback):
     
-    def __init__(self, val_samples, class_names, num_samples=4):
+    def __init__(self, val_samples, cls_names=None, num_samples=4):
         super().__init__()
-        self.num_samples, self.class_names = num_samples, class_names
+        self.num_samples, self.cls_names = num_samples, cls_names
         self.val_imgs, self.val_labels = val_samples
         
     def on_validation_epoch_end(self, trainer, pl_module):
@@ -140,12 +194,13 @@ class ImagePredictionLogger(Callback):
         logits = pl_module(val_imgs)
         preds = torch.argmax(logits, -1)
         # Log the images as wandb Image
-        trainer.logger.experiment.log({
-            "Sample Validation Prediction Results":[wandb.Image(x, caption=f"Predicted class: {self.class_names[pred]}, Ground truth class: {self.class_names[y]}") 
-                           for x, pred, y in zip(val_imgs[:self.num_samples], 
-                                                 preds[:self.num_samples], 
-                                                 val_labels[:self.num_samples])]
-            })
+        if self.cls_names != None:
+            trainer.logger.experiment.log({
+                "Sample Validation Prediction Results":[wandb.Image(x, caption=f"Predicted class: {self.cls_names[pred]}, Ground truth class: {self.cls_names[y]}") 
+                               for x, pred, y in zip(val_imgs[:self.num_samples], 
+                                                     preds[:self.num_samples], 
+                                                     val_labels[:self.num_samples])]
+                })
 
         
 def run(args):
@@ -168,25 +223,31 @@ def run(args):
     argstr = yaml.dump(args.__dict__, default_flow_style = False)
     print(f"\nTraining Arguments:\n\n{argstr}")
     
-    dm = CustomDataset(args.root, bs=args.batch_size, im_dims = args.inp_im_size)
-    cls_names, num_classes = dm._setup()
+    if args.dataset_name == "custom":
+        dm = CustomDataset(args.root, bs=args.batch_size, im_dims = args.inp_im_size)
+        cls_names, num_classes = dm._setup()
+    elif args.dataset_name == "cifar10":
+        dm = CIFAR10DataModule(64)
+        cls_names, num_classes = dm._setup()
 
     # Samples required by the custom ImagePredictionLogger callback to log image predictions.
     val_samples = next(iter(dm.val_dataloader()))
     val_imgs, val_labels = val_samples[0], val_samples[1]
 
-    model = LitModel(args.inp_im_size, args.model_name, num_classes)
+    # model = LitModel(args.inp_im_size, args.model_name, num_classes) if args.dataset_name == 'custom' else LitModel((32, 32), args.model_name, num_classes)
+    model = LitModel(args.inp_im_size, args.model_name, num_classes) 
 
     # Initialize wandb logger
-    wandb_logger = WandbLogger(project='classification', job_type='train', name=f"{args.model_name}_{args.batch_size}_{args.learning_rate}")
-    
+    wandb_logger = WandbLogger(project='classification', job_type='train', name=f"{args.model_name}_{args.dataset_name}_{args.batch_size}_{args.learning_rate}")
+
     # Initialize a trainer
-    trainer = pl.Trainer(max_epochs=args.epochs, gpus=args.devices, logger=wandb_logger,
-                         callbacks = [EarlyStopping(monitor='val_loss', mode='min'), ImagePredictionLogger(val_samples, cls_names),
+    trainer = pl.Trainer(max_epochs = args.epochs, gpus = args.devices, accelerator="gpu", devices = args.devices, strategy="ddp", logger = wandb_logger,
+                         callbacks = [EarlyStopping(monitor='val_loss', mode = 'min'), ImagePredictionLogger(val_samples, cls_names),
                                       ModelCheckpoint(monitor='val_loss', dirpath=args.save_model_path, filename=f'{args.model_name}_best')])
 
     trainer.fit(model, dm)
 
+    # Evaluate the model on the held-out test set ⚡⚡
     trainer.test(dataloaders=dm.test_dataloader())
 
     # Close wandb run
@@ -197,14 +258,17 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description = 'Object Classification Training Arguments')
     
-    # parser.add_argument("-r", "--root", type = str, default = '/home/ubuntu/workspace/bekhzod/triplet-loss-pytorch/pytorch_lightning/data/simple_classification', help = "Path to the data")
-    parser.add_argument("-r", "--root", type = str, default = '/home/ubuntu/workspace/bekhzod/class/01.fer/fer2013plus/train', help = "Path to the data")
+    parser.add_argument("-r", "--root", type = str, default = '/home/ubuntu/workspace/bekhzod/triplet-loss-pytorch/pytorch_lightning/data/simple_classification', help = "Path to the data")
+    # parser.add_argument("-r", "--root", type = str, default = '/home/ubuntu/workspace/bekhzod/class/01.fer/fer2013plus/train', help = "Path to the data")
     parser.add_argument("-bs", "--batch_size", type = int, default = 64, help = "Mini-batch size")
     parser.add_argument("-is", "--inp_im_size", type = tuple, default = (224, 224), help = "Input image size")
+    parser.add_argument("-dn", "--dataset_name", type = str, default = 'cifar10', help = "Dataset name for training")
     parser.add_argument("-mn", "--model_name", type = str, default = 'rexnet_150', help = "Model name for backbone")
+    # parser.add_argument("-mn", "--model_name", type = str, default = 'vit_base_patch16_224', help = "Model name for backbone")
+    # parser.add_argument("-mn", "--model_name", type = str, default = 'vgg16_bn', help = "Model name for backbone")
     parser.add_argument("-d", "--devices", type = int, default = 3, help = "Number of GPUs for training")
     parser.add_argument("-lr", "--learning_rate", type = float, default = 3e-5, help = "Learning rate value")
-    parser.add_argument("-e", "--epochs", type = int, default = 50, help = "Train epochs number")
+    parser.add_argument("-e", "--epochs", type = int, default = 20, help = "Train epochs number")
     parser.add_argument("-sm", "--save_model_path", type = str, default = 'saved_models', help = "Path to the directory to save a trained model")
     parser.add_argument("-sr", "--save_results_path", type = str, default = 'results', help = "Path to the directory to save the train results")
     
