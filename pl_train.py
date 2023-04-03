@@ -1,3 +1,4 @@
+# Import libraries
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 import torch, torchmetrics, wandb, timm, argparse, yaml
@@ -12,13 +13,26 @@ from pytorch_lightning.callbacks import ModelCheckpoint, Callback
 
 class CustomDataset(pl.LightningDataModule):
     
-    def __init__(self, root, bs, im_dims=(224, 224)):
+    """
+    
+    This class gets several arguments and returns train, validation, and test dataloaders.
+    
+    Arguments:
+    
+        root    - path to the directory with images, str;
+        bs      - mini batch size, int;
+        im_dims - input image dimensions, tuple -> int.
+    
+    """
+    
+    def __init__(self, root, bs, im_dims = (224, 224)):
         
         super().__init__()
         self.root, self.bs = root, bs
 
+        # Initialize transformations
         self.transform = tfs.Compose([tfs.Resize((im_dims)),
-                         tfs.Grayscale(num_output_channels=3),
+                         tfs.Grayscale(num_output_channels = 3),
                          tfs.ToTensor()])
     
     def check(self, path): 
