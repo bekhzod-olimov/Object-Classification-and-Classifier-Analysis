@@ -18,9 +18,15 @@ class CustomDataset(pl.LightningDataModule):
     
     Arguments:
     
-        root    - path to the directory with images, str;
-        bs      - mini batch size, int;
-        im_dims - input image dimensions, tuple -> int.
+        root      - path to the directory with images, str;
+        bs        - mini batch size, int;
+        im_dims   - input image dimensions, tuple -> int.
+        
+    Outputs:
+    
+        tr_dl     - train dataloader, torch dataloader object;
+        val_dl    - validation dataloader, torch dataloader object;
+        test_dl   - test dataloader, torch dataloader object;
     
     """
     
@@ -60,6 +66,17 @@ class CustomDataset(pl.LightningDataModule):
         return False
     
     def _setup(self):
+        
+        """
+        
+        This function reads images from folder, splits the data and returns class names and number of classes in the dataset.
+        
+        Outputs:
+            
+            cls_names    - name of classes in the dataset, list;
+            num_classes  - number of classes in the dataset, int.
+        
+        """
         
         self.ds = ImageFolder(root = self.root, transform = self.transform, is_valid_file=self.check)
 
