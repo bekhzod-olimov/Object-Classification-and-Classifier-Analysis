@@ -82,12 +82,17 @@ class CustomDataset(pl.LightningDataModule):
 
         # Get class names
         cls_names = list(self.ds.class_to_idx.keys())
+        
+        # Get number of classes
         num_classes = len(cls_names)
         
         # Get length of the dataset
         ds_len = len(self.ds)
+        
+        # Get length for train and validation datasets
         tr_len, val_len = int(ds_len * 0.8), int(ds_len * 0.1) 
-        # Split the dataset into train and validation datasets
+        
+        # Split the dataset into train, validation, and test datasets
         self.tr_ds, self.val_ds, self.test_ds = random_split(self.ds, [tr_len, val_len, ds_len - (tr_len + val_len)])
         
         print(f"Number of train set images: {len(self.tr_ds)}")
@@ -96,25 +101,42 @@ class CustomDataset(pl.LightningDataModule):
         
         return cls_names, num_classes
 
-    def train_dataloader(self): return DataLoader(self.tr_ds, batch_size=self.bs, shuffle=True)
+    def train_dataloader(self): return DataLoader(self.tr_ds, batch_size = self.bs, shuffle = True)
 
-    def val_dataloader(self): return DataLoader(self.val_ds, batch_size=self.bs, shuffle=False)
+    def val_dataloader(self): return DataLoader(self.val_ds, batch_size = self.bs, shuffle = False)
 
-    def test_dataloader(self): return DataLoader(self.test_ds, batch_size=self.bs, shuffle=False)
+    def test_dataloader(self): return DataLoader(self.test_ds, batch_size = self.bs, shuffle = False)
 
 class CIFAR10DataModule(pl.LightningDataModule):
+        
+    """
+    
+    This class gets several arguments and returns train, validation, and test dataloaders of CIFAR10 dataset.
+    
+    Arguments:
+    
+        bs        - batch size, int;
+        data_dir  - path to save the downloaded data, str.
+        
+    Outputs:
+    
+        tr_dl     - train dataloader, torch dataloader object;
+        val_dl    - validation dataloader, torch dataloader object;
+        test_dl   - test dataloader, torch dataloader object;
+    
+    """
     
     def __init__(self, bs, data_dir: str = './'):
         super().__init__()
-        self.data_dir = data_dir
-        self.bs = bs
+        
+        self.data_dir, self.bs, self.dims, self.num_classes = data_dir, bs, (3, 32, 32), 10
+        
+        # Initialize transformations
         self.transform = tfs.Compose([
             tfs.Resize((224, 224)),
             tfs.ToTensor(),
             tfs.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ])
-        self.dims = (3, 32, 32)
-        self.num_classes = 10
         
     def _setup(self):
         
