@@ -65,7 +65,7 @@ class CustomDataset(pl.LightningDataModule):
                 return True
         return False
     
-    def _setup(self):
+    def data_setup(self):
         
         """
         
@@ -99,13 +99,12 @@ class CustomDataset(pl.LightningDataModule):
         print(f"Number of validation set images: {len(self.val_ds)}")
         print(f"Number of test set images: {len(self.test_ds)}\n")
         
-        return cls_names, num_classes
-
-    def train_dataloader(self): return DataLoader(self.tr_ds, batch_size = self.bs, shuffle = True)
-
-    def val_dataloader(self): return DataLoader(self.val_ds, batch_size = self.bs, shuffle = False)
-
-    def test_dataloader(self): return DataLoader(self.test_ds, batch_size = self.bs, shuffle = False)
+        tr_dl = DataLoader(self.tr_ds, batch_size = self.bs, shuffle = True)
+        val_dl = DataLoader(self.val_ds, batch_size = self.bs, shuffle = False)
+        test_dl = DataLoader(self.test_ds, batch_size = self.bs, shuffle = False)
+        
+        
+        return tr_dl, val_dl, test_dl, cls_names, num_classes
 
 class CIFAR10DataModule(pl.LightningDataModule):
         
@@ -138,7 +137,7 @@ class CIFAR10DataModule(pl.LightningDataModule):
             tfs.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         ])
         
-    def _setup(self):
+    def data_setup(self):
         
         self.ds = CIFAR10(self.data_dir, train = True, download=True, transform = self.transform)
         self.test_ds = CIFAR10(self.data_dir, train = False, download=True, transform = self.transform)
@@ -149,18 +148,15 @@ class CIFAR10DataModule(pl.LightningDataModule):
         cls_names = None
         num_classes = 100
         
+        tr_dl = DataLoader(self.tr_ds, batch_size=self.bs, shuffle=True)
+        val_dl = DataLoader(self.val_ds, batch_size=self.bs, shuffle=False)
+        test_dl = DataLoader(self.test_ds, batch_size=self.bs, shuffle=False)
+                
         print(f"Number of train set images: {len(self.tr_ds)}")
         print(f"Number of validation set images: {len(self.val_ds)}")
         print(f"Number of test set images: {len(self.test_ds)}\n")
         
-        return cls_names, num_classes
-    
-    def train_dataloader(self): return DataLoader(self.tr_ds, batch_size=self.bs, shuffle=True)
-
-    def val_dataloader(self): return DataLoader(self.val_ds, batch_size=self.bs, shuffle=False)
-
-    def test_dataloader(self): return DataLoader(self.test_ds, batch_size=self.bs, shuffle=False)
-    
+        return tr_dl, val_dl, test_dl, cls_names, num_classes
     
 class LitModel(pl.LightningModule):
     
@@ -264,13 +260,13 @@ def run(args):
     
     if args.dataset_name == "custom":
         dm = CustomDataset(args.root, bs=args.batch_size, im_dims = args.inp_im_size)
-        cls_names, num_classes = dm._setup()
+        tr_dl, val_dl, test_dl, cls_names, num_classes = dm.data_setup()
     elif args.dataset_name == "cifar10":
         dm = CIFAR10DataModule(64)
-        cls_names, num_classes = dm._setup()
+        tr_dl, val_dl, test_dl, cls_names, num_classes = dm.data_setup()
 
     # Samples required by the custom ImagePredictionLogger callback to log image predictions.
-    val_samples = next(iter(dm.val_dataloader()))
+    val_samples = next(iter(val_dl))
     val_imgs, val_labels = val_samples[0], val_samples[1]
 
     # model = LitModel(args.inp_im_size, args.model_name, num_classes) if args.dataset_name == 'custom' else LitModel((32, 32), args.model_name, num_classes)
@@ -284,10 +280,10 @@ def run(args):
                          callbacks = [EarlyStopping(monitor='val_loss', mode = 'min'), ImagePredictionLogger(val_samples, cls_names),
                                       ModelCheckpoint(monitor='val_loss', dirpath=args.save_model_path, filename=f'{args.model_name}_best')])
 
-    trainer.fit(model, dm)
+    trainer.fit(model, tr_dl, val_dl)
 
     # Evaluate the model on the held-out test set ⚡⚡
-    trainer.test(dataloaders=dm.test_dataloader())
+    trainer.test(dataloaders=test_dl)
 
     # Close wandb run
     wandb.finish()
@@ -301,7 +297,7 @@ if __name__ == "__main__":
     # parser.add_argument("-r", "--root", type = str, default = '/home/ubuntu/workspace/bekhzod/class/01.fer/fer2013plus/train', help = "Path to the data")
     parser.add_argument("-bs", "--batch_size", type = int, default = 64, help = "Mini-batch size")
     parser.add_argument("-is", "--inp_im_size", type = tuple, default = (224, 224), help = "Input image size")
-    parser.add_argument("-dn", "--dataset_name", type = str, default = 'cifar10', help = "Dataset name for training")
+    parser.add_argument("-dn", "--dataset_name", type = str, default = 'custom', help = "Dataset name for training")
     parser.add_argument("-mn", "--model_name", type = str, default = 'rexnet_150', help = "Model name for backbone")
     # parser.add_argument("-mn", "--model_name", type = str, default = 'vit_base_patch16_224', help = "Model name for backbone")
     # parser.add_argument("-mn", "--model_name", type = str, default = 'vgg16_bn', help = "Model name for backbone")
