@@ -293,8 +293,7 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description = 'Object Classification Training Arguments')
     
-    parser.add_argument("-r", "--root", type = str, default = '/home/ubuntu/workspace/bekhzod/triplet-loss-pytorch/pytorch_lightning/data/simple_classification', help = "Path to the data")
-    # parser.add_argument("-r", "--root", type = str, default = '/home/ubuntu/workspace/bekhzod/class/01.fer/fer2013plus/train', help = "Path to the data")
+    parser.add_argument("-r", "--root", type = str, default = 'path/to/your/data', help = "Path to the data")
     parser.add_argument("-bs", "--batch_size", type = int, default = 64, help = "Mini-batch size")
     parser.add_argument("-is", "--inp_im_size", type = tuple, default = (224, 224), help = "Input image size")
     parser.add_argument("-dn", "--dataset_name", type = str, default = 'custom', help = "Dataset name for training")
