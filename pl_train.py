@@ -144,6 +144,20 @@ class CIFAR10DataModule(pl.LightningDataModule):
         
     def data_setup(self):
         
+        """
+        
+        This function gets data and returns metadata information of the dataset and dataloaders.
+        
+        Outputs:
+        
+            tr_dl       - train dataloader, pytorch dataloader object;
+            val_dl      - validation dataloader, pytorch dataloader object;
+            test_dl     - test dataloader, pytorch dataloader object;\
+            cls_names   - class names of the dataset, list;
+            num_classes - number of classes in the dataset, int.
+        
+        """
+        
         self.ds = CIFAR10(self.data_dir, train = True, download=True, transform = self.transform)
         self.test_ds = CIFAR10(self.data_dir, train = False, download=True, transform = self.transform)
         # Split the dataset into train and validation datasets
