@@ -166,18 +166,18 @@ class CIFAR10DataModule(pl.LightningDataModule):
         
         # Split the dataset into train and validation datasets
         self.tr_ds, self.val_ds = random_split(self.ds, [int(len(self.ds) * 0.9), int(len(self.ds)) - int(len(self.ds) * 0.9)])
-
-        # Get class names and number of classes
-        cls_names, num_classes = None, 10
         
-        # Initialize train, validation, and test dataloaders
-        tr_dl = DataLoader(self.tr_ds, batch_size=self.bs, shuffle=True)
-        val_dl = DataLoader(self.val_ds, batch_size=self.bs, shuffle=False)
-        test_dl = DataLoader(self.test_ds, batch_size=self.bs, shuffle=False)
-                
         print(f"Number of train set images: {len(self.tr_ds)}")
         print(f"Number of validation set images: {len(self.val_ds)}")
         print(f"Number of test set images: {len(self.test_ds)}\n")
+
+        # Get class names and number of classes
+        cls_names, num_classes = None, 10
+
+        # Initialize train, validation, and test dataloaders
+        tr_dl = DataLoader(self.tr_ds, batch_size = self.bs, shuffle = True)
+        val_dl = DataLoader(self.val_ds, batch_size = self.bs, shuffle = False)
+        test_dl = DataLoader(self.test_ds, batch_size = self.bs, shuffle = False)
         
         return tr_dl, val_dl, test_dl, cls_names, num_classes
     
