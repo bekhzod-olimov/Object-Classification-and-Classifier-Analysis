@@ -183,18 +183,31 @@ class CIFAR10DataModule(pl.LightningDataModule):
     
 class LitModel(pl.LightningModule):
     
-    def __init__(self, input_shape, model_name, num_classes, learning_rate=2e-4):
+    """"
+    
+    This class gets several arguments and returns a model for training.
+    
+    Arguments:
+    
+        input_shape  - shape of input to the model, tuple -> int;
+        model_name   - name of the model from timm library, str;
+        num_classes  - number of classes to be outputed from the model, int;
+        lr           - learning rate value, float.
+    
+    """
+    
+    def __init__(self, input_shape, model_name, num_classes, lr = 2e-4):
         super().__init__()
         
         # log hyperparameters
         self.save_hyperparameters()
-        self.learning_rate = learning_rate
+        self.lr = lr
         self.accuracy = torchmetrics.Accuracy(task='multiclass', num_classes=num_classes)
         
         self.model = timm.create_model(model_name, pretrained=True, num_classes=num_classes)
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
         return optimizer
         
     # will be used during inference
