@@ -103,7 +103,6 @@ class CustomDataset(pl.LightningDataModule):
         val_dl = DataLoader(self.val_ds, batch_size = self.bs, shuffle = False)
         test_dl = DataLoader(self.test_ds, batch_size = self.bs, shuffle = False)
         
-        
         return tr_dl, val_dl, test_dl, cls_names, num_classes
 
 class CIFAR10DataModule(pl.LightningDataModule):
@@ -132,10 +131,13 @@ class CIFAR10DataModule(pl.LightningDataModule):
         
         # Initialize transformations
         self.transform = tfs.Compose([
-            tfs.Resize((224, 224)),
-            tfs.ToTensor(),
-            tfs.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-        ])
+                                      # Resize image dimensions  
+                                      tfs.Resize((224, 224)),
+                                      # Transform PIL imagens to tensor objects
+                                      tfs.ToTensor(),
+                                      # Normalize tensor values
+                                      tfs.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                                    ])
         
     def data_setup(self):
         
