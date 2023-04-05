@@ -37,8 +37,11 @@ class CustomDataset(pl.LightningDataModule):
 
         # Initialize transformations
         self.transform = tfs.Compose([
+                         # Resize image dimensions
                          tfs.Resize((im_dims)),
+                         # Transform grayscale (1 channel) images into 3 channels
                          tfs.Grayscale(num_output_channels = 3),
+                         # Transform PIL images into tensor objects
                          tfs.ToTensor()]
                          )
     
@@ -78,7 +81,7 @@ class CustomDataset(pl.LightningDataModule):
         
         """
         
-        self.ds = ImageFolder(root = self.root, transform = self.transform, is_valid_file=self.check)
+        self.ds = ImageFolder(root = self.root, transform = self.transform, is_valid_file = self.check)
 
         # Get class names
         cls_names = list(self.ds.class_to_idx.keys())
