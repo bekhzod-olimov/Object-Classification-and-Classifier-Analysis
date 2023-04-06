@@ -295,7 +295,7 @@ def run(args):
     print(f"\nTraining Arguments:\n\n{argstr}")
     
     if args.dataset_name == "custom":
-        dm = CustomDataset(args.root, bs=args.batch_size, im_dims = args.inp_im_size)
+        dm = CustomDataset(args.root, bs = args.batch_size, im_dims = args.inp_im_size)
         tr_dl, val_dl, test_dl, cls_names, num_classes = dm.data_setup()
     elif args.dataset_name == "cifar10":
         dm = CIFAR10DataModule(64)
@@ -312,9 +312,9 @@ def run(args):
     wandb_logger = WandbLogger(project='classification', job_type='train', name=f"{args.model_name}_{args.dataset_name}_{args.batch_size}_{args.learning_rate}")
 
     # Initialize a trainer
-    trainer = pl.Trainer(max_epochs = args.epochs, gpus = args.devices, accelerator="gpu", devices = args.devices, strategy="ddp", logger = wandb_logger,
-                         callbacks = [EarlyStopping(monitor='val_loss', mode = 'min'), ImagePredictionLogger(val_samples, cls_names),
-                                      ModelCheckpoint(monitor='val_loss', dirpath=args.save_model_path, filename=f'{args.model_name}_best')])
+    trainer = pl.Trainer(max_epochs = args.epochs, gpus = args.devices, accelerator="gpu", devices = args.devices, strategy = "ddp", logger = wandb_logger,
+                         callbacks = [EarlyStopping(monitor = 'val_loss', mode = 'min'), ImagePredictionLogger(val_samples, cls_names),
+                                      ModelCheckpoint(monitor = 'val_loss', dirpath = args.save_model_path, filename = f'{args.model_name}_best')])
 
     trainer.fit(model, tr_dl, val_dl)
 
