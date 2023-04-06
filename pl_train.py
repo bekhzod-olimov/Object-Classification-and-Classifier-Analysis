@@ -319,16 +319,17 @@ def run(args):
     trainer.fit(model, tr_dl, val_dl)
 
     # Evaluate the model on the held-out test set ⚡⚡
-    trainer.test(dataloaders=test_dl)
+    trainer.test(dataloaders = test_dl)
 
     # Close wandb run
     wandb.finish()
-        
     
 if __name__ == "__main__":
     
-    parser = argparse.ArgumentParser(description = 'Object Classification Training Arguments')
+    # Initialize Argument Parser    
+    parser = argparse.ArgumentParser(description = 'Image Classification Training Arguments')
     
+    # Add arguments to the parser
     parser.add_argument("-r", "--root", type = str, default = 'path/to/your/data', help = "Path to the data")
     parser.add_argument("-bs", "--batch_size", type = int, default = 64, help = "Mini-batch size")
     parser.add_argument("-is", "--inp_im_size", type = tuple, default = (224, 224), help = "Input image size")
@@ -342,6 +343,8 @@ if __name__ == "__main__":
     parser.add_argument("-sm", "--save_model_path", type = str, default = 'saved_models', help = "Path to the directory to save a trained model")
     parser.add_argument("-sr", "--save_results_path", type = str, default = 'results', help = "Path to the directory to save the train results")
     
+    # Parse the added arguments
     args = parser.parse_args() 
     
-    run(args) 
+    # Run the script with the parsed arguments
+    run(args)
