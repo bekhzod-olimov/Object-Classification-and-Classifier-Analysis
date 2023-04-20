@@ -17,10 +17,10 @@ def get_dl(root, bs, t):
         
     Outputs:
     
-        cls_names    - names of the classes in the dataset;
-        num_classes  - number of the classes in the dataset;
-        tr_dl        - train dataloader;
-        val_dl       - validation dataloader.
+        cls_names    - names of the classes in the dataset, list;
+        num_classes  - number of the classes in the dataset, int;
+        tr_dl        - train dataloader, torch dataloader object;
+        val_dl       - validation dataloader, torch dataloader object.
         
     '''
     
