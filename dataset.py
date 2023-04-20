@@ -11,9 +11,9 @@ def get_dl(root, bs, t):
     
     Arguments:
     
-        root         - path to the images;
-        bs           - batch size of the dataloaders;
-        t            - transformations;
+        root         - path to the images, str;
+        bs           - batch size of the dataloaders, int;
+        t            - transformations, torch transforms object;
         
     Outputs:
     
