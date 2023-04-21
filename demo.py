@@ -44,7 +44,7 @@ def run(args):
     file = st.file_uploader('Please upload your image')
 
     # Get image and predicted class
-    im, out = predict(m=m, path=file, tfs=tfs, cls_names=cls_names) if file else predict(m=m, path=default_path, tfs=tfs, cls_names=cls_names)
+    im, out = predict(m = m, path = file, tfs = tfs, cls_names = cls_names) if file else predict(m = m, path = default_path, tfs = tfs, cls_names = cls_names)
     st.write(f"Input Image: ")
     st.image(im)
     st.write(f"Predicted as {out}")
@@ -52,8 +52,24 @@ def run(args):
 @st.cache_data
 def load_model(model_name, num_classes, checkpoint_path): 
     
+    """
+    
+    This function gets several parameters and loads a classification model.
+    
+    Parameters:
+    
+        model_name      - name of a model from timm library, str;
+        num_classes     - number of classes in the dataset, int;
+        checkpoint_path - path to the trained model, str;
+        
+    Output:
+    
+        m              - a model with pretrained weights and in an evaluation mode, torch model object;
+    
+    """
+    
     m = timm.create_model(model_name, num_classes = num_classes)
-    m.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
+    m.load_state_dict(torch.load(checkpoint_path, map_location = "cpu"))
     
     return m.eval()
 
