@@ -1,3 +1,4 @@
+# Import libraries
 import torch, pickle, timm, argparse
 import streamlit as st
 from transforms import get_transforms  
@@ -7,10 +8,26 @@ st.set_page_config(layout='wide')
 
 def run(args):
     
-    with open('cls_names.pkl', 'rb') as f:
-        cls_names = pickle.load(f)
-    tfs = get_transforms(train = False)
+    """
+    
+    This function gets parsed arguments and runs the script.
+    
+    Parameter:
+    
+        args   - parsed arguments, argparser object;
+        
+    """
+    
+    # Get class names for later use
+    with open('cls_names.pkl', 'rb') as f: cls_names = pickle.load(f)
+    
+    # Get number of classes
     num_classes = len(cls_names)
+    
+    # Initialize transformations to be applied
+    tfs = get_transforms(train = False)
+    
+    # Set a default path to the image
     default_path = "airpods.jpg"
     
 #     ds = ImageFolder(root = "/home/ubuntu/workspace/bekhzod/triplet-loss-pytorch/pytorch_lightning/data/simple_classification", transform = tfs)
@@ -21,10 +38,12 @@ def run(args):
 #     with open('cls_names.pkl', 'wb') as f: 
 #         pickle.dump(cls_names, f)
     
+    # Load classification model
     m = load_model(args.model_name, num_classes, args.checkpoint_path)
     st.title("Object Recognition")
     file = st.file_uploader('Please upload your image')
 
+    # Get image and predicted class
     im, out = predict(m=m, path=file, tfs=tfs, cls_names=cls_names) if file else predict(m=m, path=default_path, tfs=tfs, cls_names=cls_names)
     st.write(f"Input Image: ")
     st.image(im)
