@@ -9,7 +9,7 @@ def get_dl(root, bs, t):
     
     This function gets a path to the data and returns class names, number of classes, train dataloader, and validation dataloader.
     
-    Arguments:
+    Parameters:
     
         root         - path to the images, str;
         bs           - batch size of the dataloaders, int;
