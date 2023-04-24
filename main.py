@@ -11,7 +11,7 @@ def run(args):
     
     This function runs the main script based on the arguments.
     
-    Argument:
+    Parameter:
     
         args - parsed arguments.
         
