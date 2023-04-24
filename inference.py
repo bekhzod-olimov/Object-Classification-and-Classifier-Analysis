@@ -8,7 +8,7 @@ def inference(model_name, num_classes, checkpoint_path, device, dl):
     This function gets a model name, number of classes for the dataset, path to the trained model, device type, and dataloader;
     performs inference and returns model, predictions, target labels, and images.
     
-    Arguments:
+    Parameters:
     
         model_name      - model name for training, str;
         num_classes     - number of classes for the dataset, int;
