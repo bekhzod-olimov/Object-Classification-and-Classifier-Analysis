@@ -16,7 +16,7 @@ class CustomDataset(pl.LightningDataModule):
     
     This class gets several arguments and returns train, validation, and test dataloaders.
     
-    Arguments:
+    Parameters:
     
         root      - path to the directory with images, str;
         bs        - mini batch size, int;
@@ -51,7 +51,7 @@ class CustomDataset(pl.LightningDataModule):
         
         This function gets an image path and checks wheter it is a valid image file or not.
         
-        Argument:
+        Parameter:
         
             path  - an image path, str.
             
@@ -114,7 +114,7 @@ class CIFAR10DataModule(pl.LightningDataModule):
     
     This class gets several arguments and returns train, validation, and test dataloaders of CIFAR10 dataset.
     
-    Arguments:
+    Parameters:
     
         bs        - batch size, int;
         data_dir  - path to save the downloaded data, str.
@@ -187,7 +187,7 @@ class LitModel(pl.LightningModule):
     
     This class gets several arguments and returns a model for training.
     
-    Arguments:
+    Parameters:
     
         input_shape  - shape of input to the model, tuple -> int;
         model_name   - name of the model from timm library, str;
@@ -280,7 +280,7 @@ def run(args):
     
     This function runs the main script based on the arguments.
     
-    Argument:
+    Parameter:
     
         args - parsed arguments.
         
