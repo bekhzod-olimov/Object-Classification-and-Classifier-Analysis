@@ -8,7 +8,7 @@ def saveModel(model, save_path, best_accuracy, epoch):
     
     This function gets trained model and saves it as best_model.
     
-    Argument:
+    Parameter:
     
         model - a trained model.
         
@@ -29,7 +29,7 @@ def validation(model, criterion, val_dl, device):
     
     This function gets a model, validation dataloader, and device type; and performs validation process and return accuracy over the whole dataloder.
     
-    Arguments:
+    Parameters:
     
         model     - a trained model;
         val_dl    - validation dataloader;
@@ -82,7 +82,7 @@ def train(model, tr_dl, val_dl, num_classes, criterion, optimizer, device, epoch
     This function gets a model, train dataloader, validation dataloader, optimizer, 
     loss_function, number of epochs, and device type and trains the model.
     
-    Arguments:
+    Parameters:
     
         model         - a trained model;
         tr_dl         - train dataloader;
