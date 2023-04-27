@@ -202,15 +202,11 @@ class LitModel(pl.LightningModule):
         # log hyperparameters
         self.save_hyperparameters()
         self.lr = lr
-        self.accuracy = torchmetrics.Accuracy(task='multiclass', num_classes=num_classes)
-        
-        self.model = timm.create_model(model_name, pretrained=True, num_classes=num_classes)
+        self.accuracy = torchmetrics.Accuracy(task = "multiclass", num_classes = num_classes)
+        self.model = timm.create_model(model_name, pretrained = True, num_classes = num_classes)
 
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
-        return optimizer
-        
-    # will be used during inference
+    def configure_optimizers(self): return torch.optim.Adam(self.parameters(), lr = self.lr)
+    
     def forward(self, x): return self.model(x)
     
     def training_step(self, batch, batch_idx):
@@ -219,10 +215,10 @@ class LitModel(pl.LightningModule):
         loss = F.cross_entropy(logits, y)
         
         # training metrics
-        preds = torch.argmax(logits, dim=1)
+        preds = torch.argmax(logits, dim = 1)
         acc = self.accuracy(preds, y)
-        self.log('train_loss', loss, on_step=False, on_epoch=True, logger=True)
-        self.log('train_acc', acc, on_step=False, on_epoch=True, logger=True)
+        self.log('train_loss', loss, on_step = False, on_epoch = True, logger = True)
+        self.log('train_acc', acc, on_step = False, on_epoch = True, logger = True)
         
         return loss
     
@@ -232,7 +228,7 @@ class LitModel(pl.LightningModule):
         loss = F.cross_entropy(logits, y)
 
         # validation metrics
-        preds = torch.argmax(logits, dim=1)
+        preds = torch.argmax(logits, dim = 1)
         acc = self.accuracy(preds, y)
         self.log('val_loss', loss, prog_bar=True)
         self.log('val_acc', acc, prog_bar=True)
