@@ -214,7 +214,7 @@ class LitModel(pl.LightningModule):
         logits = self(x)
         loss = F.cross_entropy(logits, y)
         
-        # training metrics
+        # Train metrics
         preds = torch.argmax(logits, dim = 1)
         acc = self.accuracy(preds, y)
         self.log('train_loss', loss, on_step = False, on_epoch = True, logger = True)
@@ -227,11 +227,12 @@ class LitModel(pl.LightningModule):
         logits = self(x)
         loss = F.cross_entropy(logits, y)
 
-        # validation metrics
+        # Validation metrics
         preds = torch.argmax(logits, dim = 1)
         acc = self.accuracy(preds, y)
-        self.log('val_loss', loss, prog_bar=True)
-        self.log('val_acc', acc, prog_bar=True)
+        self.log('val_loss', loss, prog_bar = True)
+        self.log('val_acc', acc, prog_bar = True)
+        
         return loss
     
     def test_step(self, batch, batch_idx):
@@ -239,35 +240,37 @@ class LitModel(pl.LightningModule):
         logits = self(x)
         loss = F.cross_entropy(logits, y)
         
-        # validation metrics
-        preds = torch.argmax(logits, dim=1)
+        # Test metrics
+        preds = torch.argmax(logits, dim = 1)
         acc = self.accuracy(preds, y)
-        self.log('test_loss', loss, prog_bar=True)
-        self.log('test_acc', acc, prog_bar=True)
+        self.log('test_loss', loss, prog_bar = True)
+        self.log('test_acc', acc, prog_bar = True)
+        
         return loss
 
 class ImagePredictionLogger(Callback):
     
-    def __init__(self, val_samples, cls_names=None, num_samples=4):
+    def __init__(self, val_samples, cls_names = None, num_samples = 4):
         super().__init__()
         self.num_samples, self.cls_names = num_samples, cls_names
         self.val_imgs, self.val_labels = val_samples
         
     def on_validation_epoch_end(self, trainer, pl_module):
+        
         # Bring the tensors to CPU
-        val_imgs = self.val_imgs.to(device=pl_module.device)
-        val_labels = self.val_labels.to(device=pl_module.device)
+        val_imgs = self.val_imgs.to(device = pl_module.device)
+        val_labels = self.val_labels.to(device = pl_module.device)
         # Get model prediction
         logits = pl_module(val_imgs)
         preds = torch.argmax(logits, -1)
+        
         # Log the images as wandb Image
         if self.cls_names != None:
             trainer.logger.experiment.log({
-                "Sample Validation Prediction Results":[wandb.Image(x, caption=f"Predicted class: {self.cls_names[pred]}, Ground truth class: {self.cls_names[y]}") 
+                "Sample Validation Prediction Results":[wandb.Image(x, caption = f"Predicted class: {self.cls_names[pred]}, Ground truth class: {self.cls_names[y]}") 
                                for x, pred, y in zip(val_imgs[:self.num_samples], 
                                                      preds[:self.num_samples], 
-                                                     val_labels[:self.num_samples])]
-                })
+                                                     val_labels[:self.num_samples])]})
 
         
 def run(args):
@@ -305,7 +308,7 @@ def run(args):
     model = LitModel(args.inp_im_size, args.model_name, num_classes) 
 
     # Initialize wandb logger
-    wandb_logger = WandbLogger(project='classification', job_type='train', name=f"{args.model_name}_{args.dataset_name}_{args.batch_size}_{args.learning_rate}")
+    wandb_logger = WandbLogger(project = 'classification', job_type='train', name=f"{args.model_name}_{args.dataset_name}_{args.batch_size}_{args.learning_rate}")
 
     # Initialize a trainer
     trainer = pl.Trainer(max_epochs = args.epochs, gpus = args.devices, accelerator="gpu", devices = args.devices, strategy = "ddp", logger = wandb_logger,
