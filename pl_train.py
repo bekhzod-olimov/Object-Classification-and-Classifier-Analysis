@@ -308,18 +308,17 @@ def run(args):
     model = LitModel(args.inp_im_size, args.model_name, num_classes) 
 
     # Initialize wandb logger
-    wandb_logger = WandbLogger(project = 'classification', job_type='train', name=f"{args.model_name}_{args.dataset_name}_{args.batch_size}_{args.learning_rate}")
+    wandb_logger = WandbLogger(project = "classification", job_type = "train", name = f"{args.model_name}_{args.dataset_name}_{args.batch_size}_{args.learning_rate}")
 
     # Initialize a trainer
     trainer = pl.Trainer(max_epochs = args.epochs, gpus = args.devices, accelerator="gpu", devices = args.devices, strategy = "ddp", logger = wandb_logger,
-                         callbacks = [EarlyStopping(monitor = 'val_loss', mode = 'min'), ImagePredictionLogger(val_samples, cls_names),
-                                      ModelCheckpoint(monitor = 'val_loss', dirpath = args.save_model_path, filename = f'{args.model_name}_best')])
+                         callbacks = [EarlyStopping(monitor = "val_loss", mode = "min"), ImagePredictionLogger(val_samples, cls_names),
+                                      ModelCheckpoint(monitor = "val_loss", dirpath = args.save_model_path, filename = f"{args.model_name}_best")])
 
+    # Train the model
     trainer.fit(model, tr_dl, val_dl)
-
-    # Evaluate the model on the held-out test set ⚡⚡
+    # Test the model
     trainer.test(dataloaders = test_dl)
-
     # Close wandb run
     wandb.finish()
     
