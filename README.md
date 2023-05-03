@@ -36,9 +36,13 @@ python pl_train.py --batch_size = 64 --lr = 3e-4 --model_name = "efficientnet_b3
 ![Capture4](https://user-images.githubusercontent.com/50166164/209301976-61cff480-5b13-46f7-9f71-9f04d17719f3.PNG)
 ![Capture5](https://user-images.githubusercontent.com/50166164/209301983-d51197d7-bd99-4bc0-a2c8-7b303ce4d2bd.PNG)
 
-### Run classficatio demo
+### Run classfication demo
 
 After completing train process choose a model checkpoint with the best accuracy and do inference using random images from the Internet by running the following script. There are several sample images in sample_ims folder of this repo.
+
+```python
+streamlit run demo.py --checkpoint_path 'path/to/checkpoint'
+```
 
 ```python
 streamlit run demo.py --checkpoint_path 'path/to/checkpoint'
