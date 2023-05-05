@@ -90,12 +90,35 @@ def run(args):
     model = load_model(args.model_name, num_classes, args.checkpoint_path)
 
     def predict(inp):
-    
-        im = tfs(Image.fromarray(inp.astype('uint8'), 'RGB'))
-        cam = GradCAM(model = model, target_layers = [model.features[-1]], use_cuda = False)
-        grayscale_cam = cam(input_tensor = im.unsqueeze(0).to("cpu"))[0, :]
-        visualization = show_cam_on_image((im*255).cpu().numpy().transpose([1,2,0]).astype(np.uint8)/255, grayscale_cam, image_weight = 0.55, colormap = 2, use_rgb = True)
         
+        """
+        
+        This function gets an input, makes prediction and returns GradCAM visualization as well as a class name of the prediction.
+        
+        Parameter:
+        
+            inp            - input image, array.
+            
+        Output:
+        
+            visualization  - GradCAM visualization, GradCAM object;
+            class_name     - class name of the prediction, str.
+        
+        """
+    
+        # Apply transformations to the image
+        im = tfs(Image.fromarray(inp.astype("uint8"), "RGB"))
+        
+        # Initialize GradCAM object
+        cam = GradCAM(model = model, target_layers = [model.features[-1]], use_cuda = False)
+        
+        # Get a grayscale image
+        grayscale_cam = cam(input_tensor = im.unsqueeze(0).to("cpu"))[0, :]
+        
+        # Get visualization
+        visualization = show_cam_on_image((im * 255).cpu().numpy().transpose([1, 2, 0]).astype(np.uint8) / 255, grayscale_cam, image_weight = 0.55, colormap = 2, use_rgb = True)
+        
+        # Return outputs
         return Image.fromarray(visualization), cls_names[int(torch.max(model(im.unsqueeze(0)).data, 1)[1])]
     
     outputs = [gr.outputs.Image(type = "numpy", label = "GradCAM Result"), gr.outputs.Label(type = "numpy", label = "Predicted Count")]
