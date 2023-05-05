@@ -67,7 +67,7 @@ def run(args):
     """
     
     # Get class names for later use
-    with open('cls_names.pkl', 'rb') as f: cls_names = pickle.load(f)
+    with open("cls_names.pkl", "rb") as f: cls_names = pickle.load(f)
     
     # Get number of classes
     num_classes = len(cls_names)
@@ -77,11 +77,16 @@ def run(args):
     
     title = "Online Object Classifier"
     
+    # Set the description
     desc = "The model is just  trained using only 30 objects and serves only for demonstration purposes. It should be trained using more data to show better classificiation results. \n Please choose one of the images listed below or upload your own image using 'Click to Upload' and see the classification result!"
     
+    # Get the samples to be classified
     examples = [[im] for im in glob(f"{args.root}/*/*.jpg")]
+    
+    # Initialize inputs with label
     inputs = gr.inputs.Image(label = "Object to be Classified")
     
+    # Get the model to classify the objects
     model = load_model(args.model_name, num_classes, args.checkpoint_path)
 
     def predict(inp):
