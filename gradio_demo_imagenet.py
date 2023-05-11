@@ -70,13 +70,19 @@ def run(args):
     # Initialize transformations to be applied
     tfs = get_transforms(train = False)
     
+    # Set the title
     title = "Online Object Classifier"
     
+    # Set the description
     desc = "Please choose one of the images listed below or upload your own image using 'Click to Upload' and see the classification result!"
     
+    # Get sample images from the folder
     examples = [[im] for im in glob(f"{args.root}/*")]
+    
+    # Initialize inputs
     inputs = gr.inputs.Image(label = "Object to be Classified")
     
+    # Load pretrained model
     model = load_model(args.model_name, num_classes, args.checkpoint_path)
 
     def predict(inp):
