@@ -86,6 +86,21 @@ def run(args):
     model = load_model(args.model_name, num_classes, args.checkpoint_path)
 
     def predict(inp):
+        
+        """
+        
+        This function gets an input image and predicts its class.
+        
+        Parameter:
+        
+            inp    - an input image, array.
+            
+        Output:
+        
+            im     - a GradCAM applied output image, array;
+            out    - predicted class name, str.
+        
+        """
     
         im = tfs(Image.fromarray(inp.astype('uint8'), 'RGB'))
         cam = GradCAM(model = model, target_layers = [model.features[-1]], use_cuda = False)
