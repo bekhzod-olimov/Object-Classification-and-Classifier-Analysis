@@ -1,3 +1,4 @@
+# Import libraries
 import os, torch, pickle, timm, gdown, argparse, gradio as gr, numpy as np
 from transforms import get_transforms 
 from glob import glob
@@ -25,21 +26,28 @@ def load_model(model_name, num_classes, checkpoint_path):
     
     """
     
+    # If the pretrained file is in the local path
     if os.path.isfile(checkpoint_path): print("Pretrained model is already downloaded!"); pass
+    
+    # If the pretrained file has not been downloaded yet
     else: 
         print("Pretrained checkpoint is not found!")
+        # Url of the checkpoint
         url = "https://drive.google.com/file/d/1T6joFbxQN1aWesmCOWAn07t8kmoabIH8/view?usp=share_link"
+        # Get file id
         file_id = url.split("/")[-2]
+        # Set prefix
         prefix = "https://drive.google.com/uc?/export=download&id="
+        # Download the checkpoint
         gdown.download(prefix + file_id, checkpoint_path, quiet = False)
     
+    # Create a model and load the weights
     # m = timm.create_model(model_name, num_classes = num_classes)
     # m.load_state_dict(torch.load(checkpoint_path, map_location = "cpu"))
-    
+     
     m = timm.create_model(model_name, pretrained = True, num_classes = num_classes)
     
     return m.eval()
-
 
 def run(args):
     
