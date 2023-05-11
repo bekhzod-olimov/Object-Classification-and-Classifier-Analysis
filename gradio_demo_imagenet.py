@@ -102,15 +102,25 @@ def run(args):
         
         """
     
-        im = tfs(Image.fromarray(inp.astype('uint8'), 'RGB'))
+        # Get an image to be classified
+        im = tfs(Image.fromarray(inp.astype("uint8"), "RGB"))
+        
+        # Initialize GradCAM object
         cam = GradCAM(model = model, target_layers = [model.features[-1]], use_cuda = False)
+        
+        # Get grayscale GradCAM image
         grayscale_cam = cam(input_tensor = im.unsqueeze(0).to("cpu"))[0, :]
+        
+        # Get GradCAM output
         visualization = show_cam_on_image((im*255).cpu().numpy().transpose([1,2,0]).astype(np.uint8)/255, grayscale_cam, image_weight = 0.55, colormap = 2, use_rgb = True)
         
         return Image.fromarray(visualization), cls_names[int(torch.max(model(im.unsqueeze(0)).data, 1)[1].item())]
     
+    # Initialize outputs list
     outputs = [gr.outputs.Image(type = "numpy", label = "GradCAM Result"), gr.outputs.Label(type = "numpy", label = "Predicted Label")]
-    gr.Interface(fn = predict, inputs = inputs, outputs = outputs, title = title, description = desc, examples = examples, allow_flagging=False).launch(share = True)
+    
+    # Set gradio interface
+    gr.Interface(fn = predict, inputs = inputs, outputs = outputs, title = title, description = desc, examples = examples, allow_flagging = False).launch(share = True)
 
 if __name__ == "__main__":
     
@@ -118,9 +128,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Object Classification Demo')
     
     # Add arguments
-    parser.add_argument("-r", "--root", type = str, default = "/home/ubuntu/workspace/bekhzod/Object-Classification-and-Classifier-Analysis/sample_ims/imagenet", help = "Root for sample images")
-    parser.add_argument("-mn", "--model_name", type = str, default = 'rexnet_150', help = "Model name for backbone")
-    parser.add_argument("-cp", "--checkpoint_path", type = str, default = 'saved_models/best_model_11_98.6.pth', help = "Path to the checkpoint")
+    parser.add_argument("-r", "--root", type = str, default = "path/to/data", help = "Root for sample images")
+    parser.add_argument("-mn", "--model_name", type = str, default = "rexnet_150", help = "Model name for backbone")
+    parser.add_argument("-cp", "--checkpoint_path", type = str, default = "path/to/checkpoint", help = "Path to the checkpoint")
     
     # Parse the arguments
     args = parser.parse_args() 
