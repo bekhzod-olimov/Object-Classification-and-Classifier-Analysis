@@ -28,7 +28,7 @@ def run(args):
     tfs = get_transforms(train = False)
     
     # Set a default path to the image
-    default_path = "airpods.jpg"
+    default_path = "sample_ims/airpods.jpg"
     
 #     ds = ImageFolder(root = "/home/ubuntu/workspace/bekhzod/triplet-loss-pytorch/pytorch_lightning/data/simple_classification", transform = tfs)
     
@@ -49,7 +49,7 @@ def run(args):
     st.image(im)
     st.write(f"Predicted as {out}")
         
-@st.cache_data
+# @st.cache_data
 def load_model(model_name, num_classes, checkpoint_path): 
     
     """
