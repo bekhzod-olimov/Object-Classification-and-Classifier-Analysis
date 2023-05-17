@@ -6,7 +6,6 @@ from train import train
 from tqdm import tqdm
 
 def run(args):
-    # Change here
     
     """
     
