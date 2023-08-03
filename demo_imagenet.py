@@ -1,6 +1,5 @@
 # Import libraries
-import torch, pickle, timm, argparse
-import streamlit as st
+import torch, pickle, timm, argparse, streamlit as st
 from transforms import get_transforms  
 from PIL import Image, ImageFont
 from torchvision.datasets import ImageFolder
