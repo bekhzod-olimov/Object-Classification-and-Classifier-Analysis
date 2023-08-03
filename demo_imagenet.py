@@ -1,8 +1,6 @@
 # Import libraries
 import torch, pickle, timm, argparse, streamlit as st
-from transforms import get_transforms  
-from PIL import Image, ImageFont
-from torchvision.datasets import ImageFolder
+from transforms import get_transforms; from PIL import Image, ImageFont; from torchvision.datasets import ImageFolder
 st.set_page_config(layout='wide')
 
 def run(args):
