@@ -16,7 +16,7 @@ def run(args):
     """
     
     # Get class names for later use
-    with open('cls_names.pkl', 'rb') as f: cls_names = pickle.load(f)
+    with open("cls_names.pkl", "rb") as f: cls_names = pickle.load(f)
     
     # Get number of classes
     num_classes = len(cls_names)
