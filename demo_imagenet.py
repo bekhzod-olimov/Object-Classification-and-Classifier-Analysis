@@ -77,8 +77,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Object Classification Demo")
     
     # Add arguments
-    parser.add_argument("-mn", "--model_name", type = str, default = 'rexnet_150', help = "Model name for backbone")
-    parser.add_argument("-cp", "--checkpoint_path", type = str, default = 'saved_models/best_model_11_98.6.pth', help = "Path to the checkpoint")
+    parser.add_argument("-mn", "--model_name", type = str, default = "rexnet_150", help = "Model name for backbone")
+    parser.add_argument("-cp", "--checkpoint_path", type = str, default = "path/to/the/checkpoint", help = "Path to the checkpoint")
     
     # Parse the arguments
     args = parser.parse_args() 
