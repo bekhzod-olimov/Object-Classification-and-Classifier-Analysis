@@ -1,7 +1,6 @@
 # Import libraries
 import os, torch, pickle, timm, gdown, argparse, gradio as gr, numpy as np
-from transforms import get_transforms 
-from glob import glob
+from transforms import get_transforms; from glob import glob
 from PIL import Image, ImageFont
 from torchvision.datasets import ImageFolder
 from torchvision import transforms as T
@@ -133,9 +132,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Object Classification Demo")
     
     # Add arguments
-    parser.add_argument("-r", "--root", type = str, default = "/home/ubuntu/workspace/bekhzod/Object-Classification-and-Classifier-Analysis/", help = "Root for sample images")
+    parser.add_argument("-r", "--root", type = str, default = "path/to/data", help = "Root for sample images")
     parser.add_argument("-mn", "--model_name", type = str, default = "rexnet_150", help = "Model name for backbone")
-    parser.add_argument("-cp", "--checkpoint_path", type = str, default = "saved_models/best_model_11_98.6.pth", help = "Path to the checkpoint")
+    parser.add_argument("-cp", "--checkpoint_path", type = str, default = "path/to/pretrained/weight", help = "Path to the checkpoint")
     
     # Parse the arguments
     args = parser.parse_args() 
