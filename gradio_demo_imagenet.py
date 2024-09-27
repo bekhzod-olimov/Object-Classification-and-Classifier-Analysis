@@ -1,10 +1,8 @@
 # Import libraries
 import os, torch, pickle, timm, gdown, argparse, gradio as gr, numpy as np
-from transforms import get_transforms; from glob import glob
+from transforms import get_transforms; from glob import glob; from torchvision import transforms as T
 from PIL import Image, ImageFont; from torchvision.datasets import ImageFolder
-from torchvision import transforms as T
-from pytorch_grad_cam import GradCAM
-from pytorch_grad_cam.utils.image import show_cam_on_image
+from pytorch_grad_cam import GradCAM; from pytorch_grad_cam.utils.image import show_cam_on_image
 
 def load_model(model_name, num_classes, checkpoint_path): 
     
