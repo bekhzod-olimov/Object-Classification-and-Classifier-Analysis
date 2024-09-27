@@ -1,9 +1,7 @@
 # Import libraries
 import os, torch, pickle, timm, gdown, argparse, gradio as gr, numpy as np
-from transforms import get_transforms 
-from glob import glob
-from PIL import Image, ImageFont
-from torchvision.datasets import ImageFolder
+from transforms import get_transforms; from glob import glob
+from PIL import Image, ImageFont; from torchvision.datasets import ImageFolder
 from torchvision import transforms as T
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.image import show_cam_on_image
@@ -40,10 +38,6 @@ def load_model(model_name, num_classes, checkpoint_path):
         prefix = "https://drive.google.com/uc?/export=download&id="
         # Download the checkpoint
         gdown.download(prefix + file_id, checkpoint_path, quiet = False)
-    
-    # Create a model and load the weights
-    # m = timm.create_model(model_name, num_classes = num_classes)
-    # m.load_state_dict(torch.load(checkpoint_path, map_location = "cpu"))
      
     m = timm.create_model(model_name, pretrained = True, num_classes = num_classes)
     
@@ -125,7 +119,7 @@ def run(args):
 if __name__ == "__main__":
     
     # Initialize argument parser
-    parser = argparse.ArgumentParser(description = 'Object Classification Demo')
+    parser = argparse.ArgumentParser(description = "Object Classification Demo")
     
     # Add arguments
     parser.add_argument("-r", "--root", type = str, default = "path/to/data", help = "Root for sample images")
